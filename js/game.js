@@ -1,16 +1,15 @@
 // Variables
-let yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley', clockState;
+let yPosition = 35, xPosition = 15, clockState;
 
 // User Class
 class User {
   constructor(name) {
-    let health = 0, money = 0, awareness = 0, karma = 0;
     this._name = name;
-    this._health = health;
-    this._money = money;
-    this._awareness = awareness;
-    this._karma = karma;
-    this._location = currentLocation;
+    this._health = 0;
+    this._money = 0;
+    this._awareness = 0;
+    this._karma = 0;
+    this._location = 'a dirty alley';
   }
 
   get name() { return this._name; }
@@ -100,10 +99,10 @@ function introClick(clickValue){
     nodeVisToggle(toggleNodeArray, 'hidden');
     nodeContent('messageUI2', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
     nodeContent('healthUILeveled', player.health, true, 'bounce');
+    nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     nodeContent('karmaUILeveled', player.karma, true, 'bounce');
-    nodeContent('locationUILeveled', player.location, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
   }
@@ -113,6 +112,7 @@ function findingHomeClick(clickValue){
   if (player.awareness <= 16) {
     nodeContent('messageUI2', 'You make your way slowly down the alley');
     player.incAwareness(clickValue);
+    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -122,8 +122,9 @@ function findingHomeClick(clickValue){
   } else if ( player.awareness >= 17 && player.awareness <= 20) {
     player.setLocation('The City');
     nodeContent('messageUI2', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
-    nodeContent('locationUILeveled', player.location);
+    nodeContent('locationUILeveled', player.location, true, 'bounce');
     player.incAwareness(clickValue);
+    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -135,6 +136,7 @@ function findingHomeClick(clickValue){
     deleteScripts();
     createMap(2);
     player.incAwareness(clickValue);
+    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     createPlayer(yPosition, xPosition);
