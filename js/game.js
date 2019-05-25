@@ -169,10 +169,6 @@ function enterHome(){
   return clockState = setInterval(healthTimer, 1000);
 }
 
-function createCharacter(){
-  window.location.href = "http://192.168.1.104:5420/users/register";
-}
-
 // Map Script
 function createMap(stages) {
   if (document.getElementById('mapBase')){
@@ -352,6 +348,4 @@ function healthTimer() {
   }
 }
 
-function stopTimer(timerToStop) {
-  clearInterval(timerToStop);
-}
+function stopTimer(timerToStop) { clearInterval(timerToStop); }
