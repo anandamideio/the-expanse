@@ -1,0 +1,78 @@
+html {
+  min-width: 800px;
+}
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.simpleButton {
+  color: #fff;
+  background-color: #209cee;
+  position: relative;
+  display: inline-block;
+  padding: 6px 8px;
+  margin: 4px 4px 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+  cursor: url(../img/cursor-click.png) 14 0,pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-indent: 0;
+  text-shadow: none;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-rendering: auto;
+  border-color: buttonface;
+  align-items: flex-start;
+  outline: none;
+}
+
+.simpleButton::after {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+  left: -4px;
+  content: "";
+}
+
+.simpleButton.is-black {
+  background-color: rgba(38, 38, 54, 1) !important;
+  color: white !important;
+}
+
+.nes-container {
+  position: relative;
+  padding: 1.5rem 0;
+  border-color: #000;
+  border-style: solid;
+  border-width: 4px;
+  max-width: fit-content;
+  max-height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nes-container.with-title.is-centered>.title {
+  margin: -2rem auto 1rem;
+}
+
+.nes-container.with-title>.title {
+  display: table;
+  padding: 0 .5rem;
+  margin: -1.8rem 0 1rem;
+  font-size: 1rem;
+  background-color: #fff;
+}
