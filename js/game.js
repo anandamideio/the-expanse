@@ -1,10 +1,10 @@
 // Variables
-let health = 0, money = 0, awareness = 0, karma = 0, yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley'; let clockState;
+let yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley', clockState;
 
 // User Class
 class User {
   constructor(name) {
-    // invokes the setter
+    let health = 0, money = 0, awareness = 0, karma = 0;
     this._name = name;
     this._health = health;
     this._money = money;
@@ -101,9 +101,9 @@ function introClick(clickValue){
     nodeContent('messageUI2', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
     nodeContent('healthUILeveled', player.health, true, 'bounce');
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
-    nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     nodeContent('karmaUILeveled', player.karma, true, 'bounce');
+    nodeContent('locationUILeveled', player.location, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
   }
