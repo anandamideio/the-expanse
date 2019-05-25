@@ -23,6 +23,8 @@ class User {
     this._money = 0;
     this._awareness = 0;
     this._karma = 0;
+    this._intelligence = 0;
+    this._strength = 0;
     this._location = 'a dirty alley';
   }
 
@@ -49,6 +51,16 @@ class User {
   incKarma(clickValue) { this.karma += clickValue; }
   subKarma(clickValue) { this.karma -= clickValue; }
 
+  get intelligence() { return this._intelligence; }
+  set intelligence(value) { this._intelligence = value; }
+  incIntelligence(clickValue) { this.intelligence += clickValue; }
+  subIntelligence(clickValue) { this.intelligence -= clickValue; }
+
+  get strength() { return this._strength; }
+  set strength(value) { this._strength = value; }
+  incStrength(clickValue) { this.strength += clickValue; }
+  subStrength(clickValue) { this.strength -= clickValue; }
+
   get location() { return this._location; }
   set location(value) { this._location = value; }
   setLocation(value) { this.location = value; }
@@ -57,12 +69,8 @@ class User {
 // createPlayer
 function createNewPlayer(inputName) {
   let username;
-  if (inputName.length >= 20) {
-    username = 'I Choose A Long Name'
-  } else {
-    username = inputName;
-  }
-  nodeContent('nameUILeveled', username, true, 'bounce');
+  if (inputName.length >= 20) { username = 'I Choose A Long Name' } else { username = inputName; } // Hee Hee
+  nodeContent('storySoFar', `The Story So Far For ${username}..`, true, 'bounce');
   return player = new User(`${username}`); // Initiate New User
 }
 
@@ -125,6 +133,8 @@ function introClick(clickValue){
     nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
+    nodeContent('strengthUI', player.strength, true, 'bounce');
+    nodeContent('intUI', player.intelligence, true, 'bounce');
     nodeContent('karmaUILeveled', player.karma, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);

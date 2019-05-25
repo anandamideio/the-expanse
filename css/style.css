@@ -1,7 +1,6 @@
 html { font-size: 1em; line-height: 1.4; min-width: 800px;}
 
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -53,7 +52,7 @@ a { color: #00B7FF; }
 
 .is-username {
   font-weight: lighter !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 
 .nes-container {
