@@ -1,5 +1,19 @@
 // Variables
-let yPosition = 35, xPosition = 15, clockState;
+let yPosition = 35, xPosition = 15, clockState, player;
+
+// Get Characters Name (Use's SweetAlert Prompt to Ask For Character Name)
+Swal.fire({
+  title: 'What is your characters name?',
+  input: 'text',
+  inputAttributes: { autocapitalize: 'on' },
+  showCancelButton: false,
+  confirmButtonText: 'Submit',
+  showLoaderOnConfirm: true,
+  preConfirm: (username) => {
+    return createNewPlayer(username)
+  },
+  allowOutsideClick: () => {return createNewPlayer('The Unnamed One')}
+});
 
 // User Class
 class User {
@@ -40,8 +54,17 @@ class User {
   setLocation(value) { this.location = value; }
 }
 
-// Initiate New User
-const player = new User('Player');
+// createPlayer
+function createNewPlayer(inputName) {
+  let username;
+  if (inputName.length >= 20) {
+    username = 'I Choose A Long Name'
+  } else {
+    username = inputName;
+  }
+  nodeContent('nameUILeveled', username, true, 'bounce');
+  return player = new User(`${username}`); // Initiate New User
+}
 
 // Time Saving Functions
 function nodeVisToggle(toggleNode, className) {

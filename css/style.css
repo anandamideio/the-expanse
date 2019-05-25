@@ -51,6 +51,11 @@ a { color: #00B7FF; }
   color: white !important;
 }
 
+.is-username {
+  font-weight: lighter !important;
+  font-size: 20px !important;
+}
+
 .nes-container {
   position: relative;
   padding: 1.5rem 0;
