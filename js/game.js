@@ -1,5 +1,5 @@
 // Variables
-let health = 1, money = 0, awareness = 0, karma = 0, yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley'; let clockState;
+let health = 0, money = 0, awareness = 0, karma = 0, yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley'; let clockState;
 
 // User Class
 class User {
