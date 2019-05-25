@@ -1,5 +1,5 @@
 // Variables
-let health = 1, money = 0, awareness = 0, yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley'; let clockState;
+let health = 1, money = 0, awareness = 0, karma = 0, yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley'; let clockState;
 
 // User Class
 class User {
@@ -9,80 +9,36 @@ class User {
     this._health = health;
     this._money = money;
     this._awareness = awareness;
+    this._karma = karma;
     this._location = currentLocation;
   }
 
-  get name() {
-    return this._name;
-  }
+  get name() { return this._name; }
+  set name(value) { this._name = value; }
 
-  set name(value) {
-    if (value.length < 2){
-      alert("Name is too short.");
-      return;
-    }
-    this._name = value;
-  }
+  get health() { return this._health; }
+  set health(value) { this._health = value; }
+  incHealth(clickValue) { this.health += clickValue; }
+  subHealth(clickValue) { this.health -= clickValue; }
 
-  get health() {
-    return this._health;
-  }
+  get money() { return this._money; }
+  set money(value) { this._money = value; }
+  incMoney(clickValue) { this.money += clickValue; }
+  subMoney(clickValue) { this.money -= clickValue; }
 
-  set health(value) {
-    this._health = value;
-  }
+  get awareness() { return this._awareness; }
+  set awareness(value) { this._awareness = value; }
+  incAwareness(clickValue) { this.awareness += clickValue; }
+  subAwareness(clickValue) { this.awareness -= clickValue; }
 
-  incHealth(clickValue) {
-    this.health += clickValue;
-  }
+  get karma() { return this._karma; }
+  set karma(value) { this._karma = value; }
+  incKarma(clickValue) { this.karma += clickValue; }
+  subKarma(clickValue) { this.karma -= clickValue; }
 
-  subHealth(clickValue) {
-    this.health -= clickValue;
-  }
-
-  get money() {
-    return this._money;
-  }
-
-  set money(value) {
-    this._money = value;
-  }
-
-  incMoney(clickValue) {
-    this.money += clickValue;
-  }
-
-  subMoney(clickValue) {
-    this.money -= clickValue;
-  }
-
-  get awareness() {
-    return this._awareness;
-  }
-
-  set awareness(value) {
-    this._awareness = value;
-  }
-
-  incAwareness(clickValue) {
-    this.awareness += clickValue;
-  }
-
-  subAwareness(clickValue) {
-    this.awareness -= clickValue;
-  }
-
-  get location() {
-    return this._location;
-  }
-
-  set location(value) {
-    this._location = value;
-  }
-
-  setLocation(value) {
-    this.location = value;
-  }
+  get location() { return this._location; }
+  set location(value) { this._location = value; }
+  setLocation(value) { this.location = value; }
 }
 
 // Initiate New User
@@ -147,6 +103,7 @@ function introClick(clickValue){
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
     nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
+    nodeContent('karmaUILeveled', player.karma, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
   }
