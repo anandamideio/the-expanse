@@ -1,3 +1,4 @@
+import {nodeContent, nodeVisToggle} from './gameFunctions.mjs';
 // Click Functions
 export function introClick(clickValue, player) {
   player.incHealth(clickValue);
