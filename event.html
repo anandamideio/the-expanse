@@ -1,0 +1,135 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Expanse</title>
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" integrity="sha256-8B1OaG0zT7uYA572S2xOxWACq9NXYPQ+U5kHPV1bJN4=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha256-f6fW47QDm1m01HIep+UjpCpNwLVkBYKd+fhpb4VQ+gE=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@2/dark.min.css">
+</head>
+
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<section class="hero is-light" style="margin: 0 0 0.6rem;">
+  <div class="hero-body" style="padding-top: 0; padding-bottom: 0;">
+    <div class="container">
+      <div id="stats-is-leveled">
+        <nav class="level is-mobile">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Health</p>
+              <p id="healthUILeveled" class="title"></p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Awareness</p>
+              <p id="awarenessUILeveled" class="title"></p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <img src="img/logo.png" alt="">
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Karma</p>
+              <p id="karmaUILeveled" class="title"></p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Money</p>
+              <p id="moneyUILeveled" class="title"></p>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0">
+  <div class="container">
+
+
+    <div id="statPadding">
+      <br />
+    </div>
+
+    <section id="messageAndMap" class="columns">
+      <article id="refinedMessageUI" class="column is-half">
+        <div class="columns">
+          <div class="column is-full">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  Actions
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  <button type="button" id="actionBtn" class="button is-black is-medium">Panic!</button>
+                  <!--
+                  <button type="button" onClick="introClick(1)" id="introButton" class="button is-black is-medium">Panic!</button>
+                  <button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="hidden button is-info is-medium">Look Around</button>
+                  <button type="button" onClick="goLeft()" id="goLeftButton" class="hidden button is-info is-medium">Go Left</button>
+                  <button type="button" onClick="goRight()" id="goRightButton" class="hidden button is-info is-medium">Go Right</button>
+                  <button type="button" onClick="enterHome()" id="enterHomeButton" class="hidden button is-info is-medium">Enter Home</button>
+                  <button type="button" onClick="allocatePersonality(40)" id="allocatePersonalityButton" class="hidden button is-info is-medium">Allocate Personality</button>
+                -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-full">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title" id="storySoFar">
+                  The Story So Far..
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  <span id="messageUI2"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <section id="map" class="hidden nes-container with-title is-centered">
+        <p class="title">Map - <span id="locationUILeveled"></span></p>
+        <canvas id="canvas" width="400" height="400"></canvas>
+      </section>
+    </section>
+  </div>
+</section>
+<!-- Modal Zone -->
+<div id="statAllocationModal" class="modal">   <!-- Stat Allocation Modal -->
+  <div class="modal-content">     <!-- Modal content -->
+    <span class="close">&times;</span>
+    <p>It's time to create your new personality. Let's see what you have to work with:</p>
+  </div>
+</div>
+<!-- End Modal Zone -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha256-321PxS+POvbvWcIVoRZeRmf32q7fTFQJ21bXwTNWREY=" crossorigin="anonymous"></script>
+<script src="js/vendor/modernizr-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.js"></script>
+<script type="module" src="js/eventBased.mjs"></script>
+<script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>
+<script src="js/plugins.js"></script>
+</body>
+
+</html>

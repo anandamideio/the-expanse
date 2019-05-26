@@ -203,39 +203,7 @@ function enterHome(){
 }
 
 function allocatePersonality(statPoints) {
-  let totalStats = statPoints;
-  function allocateStats(points) {
-    Swal.mixin({
-      input: 'number',
-      inputAttributes: {max: points, min: 0},
-      confirmButtonText: 'Submit',
-      showCancelButton: false,
-      progressSteps: ['Int', 'Str', 'Agi', 'Cre', 'Per', 'Vit', 'Cha', 'Lck']
-    }).queue([
-      {
-        title: 'Intelligence'
-      },
-      'Strength',
-      'Agility',
-      'Creativity',
-      'Perception',
-      'Vitality',
-      'Charisma',
-      'Luck'
-    ]).then((result) => {
-      if (result.value) {
-        Swal.fire({
-          title: 'Personality Built!',
-          html:
-            'Your answers: <pre><code>' +
-            JSON.stringify(result.value) +
-            '</code></pre>',
-          confirmButtonText: 'Lovely!'
-        })
-      }
-    });
-  }
-  allocateStats(totalStats);
+
 }
 
 // Map Script
@@ -418,3 +386,19 @@ function healthTimer() {
 }
 
 function stopTimer(timerToStop) { clearInterval(timerToStop); }
+
+// Modal Interactions
+const modal = document.getElementById("statAllocationModal"); // Get the modal
+const btn = document.getElementById("allocatePersonalityButton"); // Get the button that opens the modal
+const span = document.getElementsByClassName("close")[0]; // Get the <span> element that closes the modal
+btn.onclick = function() { // When the user clicks on the button, open the modal
+  modal.style.display = "block";
+};
+span.onclick = function() { // When the user clicks on <span> (x), close the modal
+  modal.style.display = "none";
+};
+window.onclick = function(event) { // When the user clicks anywhere outside of the modal, close it
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
