@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/animate.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha256-f6fW47QDm1m01HIep+UjpCpNwLVkBYKd+fhpb4VQ+gE=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@2/dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha256-321PxS+POvbvWcIVoRZeRmf32q7fTFQJ21bXwTNWREY=" crossorigin="anonymous"></script>
 </head>
 
@@ -95,7 +96,7 @@
                     <button type="button" onClick="goLeft()" id="goLeftButton" class="hidden button is-info is-medium">Go Left</button>
                     <button type="button" onClick="goRight()" id="goRightButton" class="hidden button is-info is-medium">Go Right</button>
                     <button type="button" onClick="enterHome()" id="enterHomeButton" class="hidden button is-info is-medium">Enter Home</button>
-                    <button type="button" onClick="createCharacter()" id="createCharacterButton" class="hidden button is-info is-medium">Create Character</button>
+                    <button type="button" onClick="allocatePersonality(40)" id="allocatePersonalityButton" class="hidden button is-info is-medium">Allocate Personality</button>
                   </div>
                 </div>
               </div>
@@ -126,7 +127,7 @@
     </div>
   </section>
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.js"></script>
   <script src="js/game.js"></script>
   <script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>
   <script src="js/plugins.js"></script>

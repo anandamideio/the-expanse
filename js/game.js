@@ -69,7 +69,7 @@ class User {
 // createPlayer
 function createNewPlayer(inputName) {
   let username;
-  if (inputName.length >= 20) { username = 'I Choose A Long Name' } else { username = inputName; } // Hee Hee
+  if (inputName.length >= 20) { username = 'I Chose A Long Name' } else { username = inputName; } // Hee Hee
   nodeContent('storySoFar', `The Story So Far For ${username}..`, true, 'bounce');
   return player = new User(`${username}`); // Initiate New User
 }
@@ -197,9 +197,45 @@ function goRight(){
 function enterHome(){
   player.setLocation('Home');
   nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI2', 'You enter your home, and as the wave of adrenalin leaves you, you pass out on the floor');
+  nodeContent('messageUI2', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
   nodeVisToggle(['enterHomeButton'], 'hidden');
   return clockState = setInterval(healthTimer, 1000);
+}
+
+function allocatePersonality(statPoints) {
+  let totalStats = statPoints;
+  function allocateStats(points) {
+    Swal.mixin({
+      input: 'number',
+      inputAttributes: {max: points, min: 0},
+      confirmButtonText: 'Submit',
+      showCancelButton: false,
+      progressSteps: ['Int', 'Str', 'Agi', 'Cre', 'Per', 'Vit', 'Cha', 'Lck']
+    }).queue([
+      {
+        title: 'Intelligence'
+      },
+      'Strength',
+      'Agility',
+      'Creativity',
+      'Perception',
+      'Vitality',
+      'Charisma',
+      'Luck'
+    ]).then((result) => {
+      if (result.value) {
+        Swal.fire({
+          title: 'Personality Built!',
+          html:
+            'Your answers: <pre><code>' +
+            JSON.stringify(result.value) +
+            '</code></pre>',
+          confirmButtonText: 'Lovely!'
+        })
+      }
+    });
+  }
+  allocateStats(totalStats);
 }
 
 // Map Script
@@ -372,8 +408,8 @@ function deleteScripts() {
 
 function healthTimer() {
   if (player.health >= 100) {
-    nodeContent('messageUI2', 'In your sleep you hear whispers from something. You strain to hear what they are saying but you can\'t quite make it out. Suddenly, a loud voice says "Are you ready to begin? We will need some information from your first.."');
-    nodeVisToggle(['createCharacterButton'], 'hidden');
+    nodeContent('messageUI2', 'In your sleep you hear whispers from something. You strain to hear what they are saying but you can\'t quite make it out. Suddenly, the whispers stop and a loud voice says "Ah shit! I forgot to send you back with any memory.. Well, oh well. Nothing I can do about it now. Well, since I\'m here, may well let you allocate your new personality."');
+    nodeVisToggle(['allocatePersonalityButton'], 'hidden');
     stopTimer(clockState);
   } else if (player.health < 100) {
     player.incHealth(5);

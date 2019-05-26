@@ -12,5 +12,6 @@
     <orderEntry type="library" name="bulma-toast" level="application" />
     <orderEntry type="library" name="iziToast" level="application" />
     <orderEntry type="library" name="toastr" level="application" />
+    <orderEntry type="library" name="sweetalert2" level="application" />
   </component>
 </module>
