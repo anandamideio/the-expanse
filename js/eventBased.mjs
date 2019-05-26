@@ -22,7 +22,7 @@ try {
   }).then((username) => {
     let yPosition = 35, xPosition = 15, clockState;
     const player = new User(username), actionBtn = document.getElementById('actionBtn');
-    actionBtn.onclick = function(){introClick(1)};
+    actionBtn.onclick = function(){introClick(1, player)};
   });
 } catch (err) {
   console.error(err)

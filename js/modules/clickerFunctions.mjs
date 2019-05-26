@@ -1,5 +1,5 @@
 // Click Functions
-export function introClick(clickValue){
+export function introClick(clickValue, player) {
   player.incHealth(clickValue);
   nodeContent('healthUILeveled', player.health, true, 'bounce');
   if (player.health === 2) {
