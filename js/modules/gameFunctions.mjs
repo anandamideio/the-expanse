@@ -23,3 +23,8 @@ export function nodeContent(selectedNode, content, animate, animation) {
     document.getElementById(selectedNode).innerHTML = `${content}`;
   }
 }
+
+export function changeNode(selectedNode, newNode, newText) {
+  document.getElementById(selectedNode).id = newNode;
+  document.getElementById(newNode).value = newText;
+}

@@ -1,8 +1,8 @@
-import {nodeContent, nodeVisToggle} from './gameFunctions.mjs';
+import {nodeContent, nodeVisToggle, changeNode} from './gameFunctions.mjs';
 // Click Functions
 export function introClick(clickValue, player) {
   player.incHealth(clickValue);
-  nodeContent('healthUILeveled', player.health, true, 'bounce');
+  nodeContent('healthUI', player.health, true, 'bounce');
   if (player.health === 2) {
     iziToast.show({
       title: 'Hey',
@@ -10,9 +10,9 @@ export function introClick(clickValue, player) {
       position: 'topRight',
     });
   } else if (player.health === 5) {
-    nodeContent('introButton', 'Cough');
+    nodeContent('actionBtn', 'Cough');
   } else if (player.health === 6) {
-    nodeContent('messageUI2', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
+    nodeContent('messageUI', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
   } else if (player.health === 7) {
     iziToast.show({
       title: 'Hmmm..',
@@ -20,19 +20,18 @@ export function introClick(clickValue, player) {
       position: 'topRight',
     });
   } else if (player.health === 8 || player.health === 9) {
-    nodeContent('messageUI2', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
+    nodeContent('messageUI', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
   } else if (player.health === 10 ) {
-    nodeContent('introButton', 'Breathe');
-    nodeContent('messageUI2', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
+    nodeContent('actionBtn', 'Breathe');
+    nodeContent('messageUI', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
   } else if ( player.health === 15) {
-    let toggleNodeArray = ['introButton', 'findingHomeButton', 'map'];
-    nodeVisToggle(toggleNodeArray, 'hidden');
-    nodeContent('messageUI2', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
-    nodeContent('healthUILeveled', player.health, true, 'bounce');
-    nodeContent('locationUILeveled', player.location, true, 'bounce');
-    nodeContent('moneyUILeveled', player.money, true, 'bounce');
-    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
-    nodeContent('karmaUILeveled', player.karma, true, 'bounce');
+    nodeVisToggle(['map'], 'hidden');
+    nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
+    nodeContent('healthUI', player.health, true, 'bounce');
+    nodeContent('locationUI', player.location, true, 'bounce');
+    nodeContent('moneyUI', player.money, true, 'bounce');
+    nodeContent('awarenessUI', player.awareness, true, 'bounce');
+    nodeContent('karmaUI', player.karma, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
   }
