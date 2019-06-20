@@ -92,10 +92,6 @@
                 <div class="card-content">
                   <div class="content">
                     <button type="button" onClick="introClick(1)" id="introButton" class="button is-black is-medium">Panic!</button>
-                    <button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="hidden button is-info is-medium">Look Around</button>
-                    <button type="button" onClick="goLeft()" id="goLeftButton" class="hidden button is-info is-medium">Go Left</button>
-                    <button type="button" onClick="goRight()" id="goRightButton" class="hidden button is-info is-medium">Go Right</button>
-                    <button type="button" onClick="enterHome()" id="enterHomeButton" class="hidden button is-info is-medium">Enter Home</button>
                     <button type="button" onClick="allocatePersonality(40)" id="allocatePersonalityButton" class="hidden button is-info is-medium">Allocate Personality</button>
                   </div>
                 </div>
@@ -112,7 +108,7 @@
                 </header>
                 <div class="card-content">
                   <div class="content">
-                    <span id="messageUI2"></span>
+                    <span id="messageUI"></span>
                   </div>
                 </div>
               </div>
@@ -134,6 +130,7 @@
     </div>
   </div>
   <!-- End Modal Zone -->
+ <script  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.js"></script>
   <script src="js/game.js"></script>

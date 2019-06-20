@@ -26,6 +26,7 @@ class User {
     this._intelligence = 0;
     this._strength = 0;
     this._location = 'a dirty alley';
+    this._perks = [];
   }
 
   get name() { return this._name; }
@@ -64,6 +65,9 @@ class User {
   get location() { return this._location; }
   set location(value) { this._location = value; }
   setLocation(value) { this.location = value; }
+
+  get perks() { return this._perks; }
+  addperk(perk) { this._perks.push(perk); }
 }
 
 // createPlayer
@@ -113,7 +117,7 @@ function introClick(clickValue){
   } else if (player.health === 5) {
     nodeContent('introButton', 'Cough');
   } else if (player.health === 6) {
-    nodeContent('messageUI2', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
+    nodeContent('messageUI', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
   } else if (player.health === 7) {
     iziToast.show({
       title: 'Hmmm..',
@@ -121,14 +125,14 @@ function introClick(clickValue){
       position: 'topRight',
     });
   } else if (player.health === 8 || player.health === 9) {
-    nodeContent('messageUI2', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
+    nodeContent('messageUI', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
   } else if (player.health === 10 ) {
     nodeContent('introButton', 'Breathe');
-    nodeContent('messageUI2', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
+    nodeContent('messageUI', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
   } else if ( player.health === 15) {
-    let toggleNodeArray = ['introButton', 'findingHomeButton', 'map'];
-    nodeVisToggle(toggleNodeArray, 'hidden');
-    nodeContent('messageUI2', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
+    $('#introButton').replaceWith(`<button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="button is-info is-medium">Look Around</button>`);
+    nodeVisToggle(['map'], 'hidden');
+    nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
     nodeContent('healthUILeveled', player.health, true, 'bounce');
     nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
@@ -143,7 +147,7 @@ function introClick(clickValue){
 
 function findingHomeClick(clickValue){
   if (player.awareness <= 16) {
-    nodeContent('messageUI2', 'You make your way slowly down the alley');
+    nodeContent('messageUI', 'You make your way slowly down the alley');
     player.incAwareness(clickValue);
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
@@ -154,7 +158,7 @@ function findingHomeClick(clickValue){
     createPlayer(yPosition, xPosition);
   } else if ( player.awareness >= 17 && player.awareness <= 20) {
     player.setLocation('The City');
-    nodeContent('messageUI2', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
+    nodeContent('messageUI', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
     nodeContent('locationUILeveled', player.location, true, 'bounce');
     player.incAwareness(clickValue);
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
@@ -165,7 +169,7 @@ function findingHomeClick(clickValue){
     redrawMap();
     createPlayer(yPosition, xPosition);
   } else if ( player.awareness === 24) {
-    nodeContent('messageUI2', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
+    nodeContent('messageUI', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
     deleteScripts();
     createMap(2);
     player.incAwareness(clickValue);
@@ -173,31 +177,33 @@ function findingHomeClick(clickValue){
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     createPlayer(yPosition, xPosition);
-    let toggleNodeArray = ['findingHomeButton', 'goLeftButton', 'goRightButton'];
-    return nodeVisToggle(toggleNodeArray, 'hidden');
+    $('#findingHomeButton').replaceWith(`<button type="button" onClick="goLeft()" id="goLeftButton" class="button is-info is-medium">Go Left</button>
+                    <button type="button" onClick="goRight()" id="goRightButton" class="button is-info is-medium">Go Right</button>`);
   }
 }
 
 function goLeft() {
   player.setLocation('In front of a home');
   nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI2', 'You head left, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
-  let toggleNodeArray = ['map', 'goLeftButton', 'goRightButton', 'enterHomeButton'];
-  return nodeVisToggle(toggleNodeArray, 'hidden');
+  nodeContent('messageUI', 'You head left, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
+  $('#map').replaceWith(``);
+  $('#goLeftButton').replaceWith(``);
+  $('#goRightButton').replaceWith(` <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>`);
 }
 
 function goRight(){
   player.setLocation('In front of a home.');
   nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI2', 'You head right, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
-  let toggleNodeArray = ['map', 'goLeftButton', 'goRightButton', 'enterHomeButton'];
-  return nodeVisToggle(toggleNodeArray, 'hidden');
+  nodeContent('messageUI', 'You head right, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
+  $('#map').replaceWith(``);
+  $('#goLeftButton').replaceWith(``);
+  $('#goRightButton').replaceWith(` <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>`);
 }
 
 function enterHome(){
   player.setLocation('Home');
   nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI2', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
+  nodeContent('messageUI', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
   nodeVisToggle(['enterHomeButton'], 'hidden');
   return clockState = setInterval(healthTimer, 1000);
 }
@@ -376,7 +382,7 @@ function deleteScripts() {
 
 function healthTimer() {
   if (player.health >= 100) {
-    nodeContent('messageUI2', 'In your sleep you hear whispers from something. You strain to hear what they are saying but you can\'t quite make it out. Suddenly, the whispers stop and a loud voice says "Ah shit! I forgot to send you back with any memory.. Well, oh well. Nothing I can do about it now. Well, since I\'m here, may well let you allocate your new personality."');
+    nodeContent('messageUI', 'In your sleep you hear whispers from something. You strain to hear what they are saying but you can\'t quite make it out. Suddenly, the whispers stop and a loud voice says "Ah shit! I forgot to send you back with any memory.. Well, oh well. Nothing I can do about it now. Well, since I\'m here, may well let you allocate your new personality."');
     nodeVisToggle(['allocatePersonalityButton'], 'hidden');
     stopTimer(clockState);
   } else if (player.health < 100) {
