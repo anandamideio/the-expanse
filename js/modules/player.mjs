@@ -8,6 +8,9 @@ export class User {
     this._karma = 0;
     this._intelligence = 0;
     this._strength = 0;
+    this._creativity = 0;
+    this._perception = 0;
+    this._charisma = 0;
     this._location = 'a dirty alley';
   }
 // Player Name Functions

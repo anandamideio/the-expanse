@@ -25,7 +25,12 @@ class User {
     this._karma = 0;
     this._intelligence = 0;
     this._strength = 0;
+    this._creativity = 0;
+    this._perception = 0;
+    this._charisma = 0;
     this._location = 'a dirty alley';
+    this._statPoints = 28;
+    this._perkPoints = 1;
     this._perks = [];
   }
 
@@ -61,6 +66,31 @@ class User {
   set strength(value) { this._strength = value; }
   incStrength(clickValue) { this.strength += clickValue; }
   subStrength(clickValue) { this.strength -= clickValue; }
+
+  get creativity() { return this._creativity; }
+  set creativity(value) { this._creativity = value; }
+  incCreativity(clickValue) { this.creativity += clickValue; }
+  subCreativity(clickValue) { this.creativity -= clickValue; }
+
+  get charisma() { return this._charisma; }
+  set charisma(value) { this._charisma = value; }
+  incCharisma(clickValue) { this.charisma += clickValue; }
+  subCharisma(clickValue) { this.charisma -= clickValue; }
+
+  get perception() { return this._perception; }
+  set perception(value) { this._perception = value; }
+  incPerception(clickValue) { this.perception += clickValue; }
+  subPerception(clickValue) { this.perception -= clickValue; }
+
+  get statPoints() { return this._statPoints; }
+  set statPoints(value) { this._statPoints = value; }
+  incStatPoints(clickValue) { this.statPoints += clickValue; }
+  subStatPoints(clickValue) { this.statPoints -= clickValue; }
+
+  get perkPoints() { return this._perkPoints; }
+  set perkPoints(value) { this._perkPoints = value; }
+  incPerkPoints(clickValue) { this.perkPoints += clickValue; }
+  subPerkPoints(clickValue) { this.erkPoints -= clickValue; }
 
   get location() { return this._location; }
   set location(value) { this._location = value; }
@@ -202,7 +232,6 @@ function goRight(){
 
 function enterHome(){
   player.setLocation('Home');
-  nodeContent('locationUILeveled', player.location);
   nodeContent('messageUI', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
   nodeVisToggle(['enterHomeButton'], 'hidden');
   return clockState = setInterval(healthTimer, 1000);
@@ -215,7 +244,7 @@ function allocatePersonality(statPoints) {
 // Map Script
 function createMap(stages) {
   if (document.getElementById('mapBase')){
-    document.getElementById('mapBase').remove();
+    $('#mapBase').replaceWith(``);
   }
   const magicMapBase = document.createElement('script');
   magicMapBase.type = 'text/javascript';
@@ -370,13 +399,13 @@ function clearCanvas() {
 function deleteScripts() {
   clearCanvas();
   if (document.getElementById('mapBase')){
-    document.getElementById('mapBase').remove();
+   $('#mapBase').replaceWith(``);
   }
   if (document.getElementById('mapRedraw')){
-    document.getElementById('mapRedraw').remove();
+    $('#mapRedraw').replaceWith(``);
   }
   if (document.getElementById('mapPlayerScript')){
-    document.getElementById('mapPlayerScript').remove();
+    $('#mapPlayerScript').replaceWith(``);
   }
 }
 
