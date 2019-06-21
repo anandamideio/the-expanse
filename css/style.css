@@ -219,6 +219,6 @@ textarea { resize: vertical; }
   h2, h3 { page-break-after: avoid; }
 }
 
-is-stat-box {
+.is-stat-box {
   max-width: 2.5rem;
 }
