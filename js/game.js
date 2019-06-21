@@ -164,11 +164,8 @@ function introClick(clickValue){
     nodeVisToggle(['map'], 'hidden');
     nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
     nodeContent('healthUILeveled', player.health, true, 'bounce');
-    nodeContent('locationUILeveled', player.location, true, 'bounce');
     nodeContent('moneyUILeveled', player.money, true, 'bounce');
     nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
-    nodeContent('strengthUI', player.strength, true, 'bounce');
-    nodeContent('intUI', player.intelligence, true, 'bounce');
     nodeContent('karmaUILeveled', player.karma, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
