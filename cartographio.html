@@ -1,14 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> <meta charset="UTF-8"> <title>Rough Cartography</title> </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Rough Cartography</title>
+  <script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>
+</head>
 <style> html, body { margin: 0; } </style>
 
 <body>
   <canvas id="mapPort" width="800" height="800"></canvas>
 </body>
-
+<script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/draggable.bundle.js"></script>
+<script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>
 <script>
-  const canvas = document.querySelector('#mapPort');
-  const surface = canvas.getContext('2d');
+  const canvas = rough.canvas(document.getElementById('mapPort'));
+  const cells = { //  [top, right, bottom, left]
+		oN: [1,0,0,0], xN: [0,1,1,1], // North
+		oE: [0,1,0,0], xE: [1,0,1,1], // East
+		oS: [0,0,1,0], xS: [1,1,0,1], // South
+		oW: [0,0,0,1], xW: [1,1,1,0], // West
+    EW: [0,1,0,1], NS: [1,0,1,0], // Open on ends
+		oo: [1,1,1,1], xx: [0,0,0,0], // All open/closed
+  };
+	const mapDisplay = [
+		[cells.xx,cells.xS,cells.xx,cells.EW,cells.xx],
+		[cells.NS,cells.xx,cells.NS,cells.xx,cells.NS],
+		[cells.xx,cells.EW,cells.xx,cells.EW,cells.xx],
+		[cells.xW,cells.xx,cells.NS,cells.xx,cells.NS],
+		[cells.xx,cells.EW,cells.xx,cells.xN,cells.oo],
+  ];
+
+	let xLoc=3, yLoc=3;
+	canvas.rectangle(10, 10, 640, 640); // <-A simple border-<
+
+	const drawCell = function(xLoc, yLoc, cell) {
+		const lines = [
+			{p1: 20+(100*xLoc), p2: 20+(100*yLoc), p3: 120+(100*xLoc), p4: 20+(100*yLoc)}, // top
+      {p1: 20+(100*xLoc), p2: 20+(100*yLoc), p3: 20+(100*xLoc), p4: 120+(100*yLoc)}, // left
+			{p1: 20+(100*xLoc), p2: 120+(100*yLoc), p3: 120+(100*xLoc), p4: 120+(100*yLoc)}, //bottom
+			{p1: 120+(100*xLoc), p2: 20+(100*yLoc), p3: 120+(100*xLoc), p4: 120+(100*yLoc)}, // right
+		];
+		cell.forEach((wall, index) => {
+			console.log(`Wall value ${wall}`);
+			console.log(`Lines array length ${lines.length}`);
+			console.log(`Index : ${index}`);
+			console.log(`Lines: ${lines}`);
+			if(wall === 1) {console.log(lines[index]); return canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)}
+		})
+  };
+
+	mapDisplay.forEach((row, yIter) => {
+		console.log(row);
+		row.forEach((cell, xIter) => {
+			drawCell(xIter, yIter, cell)
+    })
+  });
+
+
 </script>
 </html>
