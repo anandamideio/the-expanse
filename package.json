@@ -1,0 +1,148 @@
+{
+  "name": "the-expanse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anandamideio/the-expanse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anandamideio/the-expanse/issues"
+  },
+  "homepage": "https://github.com/anandamideio/the-expanse#readme",
+  "devDependencies": {
+    "@getify/eslint-plugin-proper-ternary": "^3.0.1",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-security": "^1.4.0"
+  },
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "node",
+      "security",
+      "@getify/proper-ternary"
+    ],
+    "extends": [
+      "airbnb-base",
+      "plugin:node/recommended",
+      "plugin:security/recommended",
+      "plugin:@getify/proper-ternary/getify-says"
+    ],
+    "env": {
+      "mongo": true,
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "strict": [
+        2,
+        "global"
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed",
+        {
+          "requireForBlockBody": true
+        }
+      ],
+      "no-unused-vars": "off",
+      "one-var": [
+        "error",
+        {
+          "var": "consecutive",
+          "let": "consecutive",
+          "const": "never"
+        }
+      ],
+      "one-var-declaration-per-line": "off",
+      "consistent-return": "off",
+      "func-names": "off",
+      "max-len": "off",
+      "no-unused-expressions": "off",
+      "no-console": "off",
+      "no-shadow": [
+        "error",
+        {
+          "hoist": "never",
+          "allow": [
+            "done",
+            "resolve",
+            "err",
+            "error",
+            "cb",
+            "User",
+            "user",
+            "issue"
+          ]
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": true,
+          "ignorePropertyModificationsFor": [
+            "realtor",
+            "tempRealtor",
+            "counters",
+            "user",
+            "selectedUser",
+            "client",
+            "employee",
+            "issue",
+            "res",
+            "userReturned"
+          ]
+        }
+      ],
+      "no-useless-escape": "off",
+      "no-lonely-if": "error",
+      "no-new-object": "error",
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "object-curly-newline": [
+        "error",
+        {
+          "multiline": true,
+          "consistent": true
+        }
+      ],
+      "no-underscore-dangle": "off",
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "object-shorthand": [
+        "error",
+        "consistent"
+      ],
+      "prefer-destructuring": "off",
+      "space-before-blocks": "off",
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
+      "prefer-rest-params": "off"
+    }
+  },
+  "nodemonConfig": {
+    "events": {
+      "start": "cls || clear"
+    },
+    "ignore": [
+      "log/"
+    ]
+  }
+}

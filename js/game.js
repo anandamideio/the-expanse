@@ -103,7 +103,7 @@ class User {
 // createPlayer
 function createNewPlayer(inputName) {
   let username;
-  if (inputName.length >= 20) { username = 'I Chose A Long Name' } else { username = inputName; } // Hee Hee
+  username = inputName;
   nodeContent('storySoFar', `The Story So Far For ${username}..`, true, 'bounce');
   return player = new User(`${username}`); // Initiate New User
 }
