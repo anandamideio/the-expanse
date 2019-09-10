@@ -33,8 +33,15 @@ export const µ = function(selector) {
       return this;
     },
     html(string) {
-      el.innerHTML = string;
-      return this;
+      if (!string) {
+        return el.innerHTML;
+      } else {
+        el.innerHTML = string;
+        return this;
+      }
+    },
+    context(){
+      return el.outerHTML;
     },
     remove() {
       el.parentNode.removeChild(el);

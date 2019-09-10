@@ -2,17 +2,21 @@ import {asyncForEach, µ, grabAll} from './env.mjs';
 
 // Variables
 const buttonAreaStart = `<div class="content" id="buttonArea">`;
+const scriptAreaStart = `<div id="scriptArea">`
 const divClose = `</div>`;
 
+
+// Performs a health check on the player when passed the game engine
 const healthCheck = function(game) {
   const playerHealth = game.player.value.health;
   let healthLvl;
   if (playerHealth < 4){healthLvl = 'nearDeath'};
+  if (playerHealth >= 4 && playerHealth <= 10){healthLvl = 'lowHealth'};
   return healthLvl;
 }
 
 // Create a new button with your style
-export const newBtn = ({id: id, click: click, text: text, self: self} = {}) => {
+export const newBtn = ({id: id, click: click, val: val, text: text, self: self} = {}) => {
   const healthLvl = healthCheck(self);
   let btnClass;
   switch(healthLvl){
@@ -26,10 +30,12 @@ export const newBtn = ({id: id, click: click, text: text, self: self} = {}) => {
       btnClass = 'button is-blue is-medium';
   }
   const btnContainer = `${buttonAreaStart}
-    <button type="button" onClick="${click}" id="${id}" class="${btnClass}">${text}</button>
+    <button type="button" id="${id}" class="${btnClass}">${text}</button>
   ${divClose}`;
   µ('#buttonArea').replaceWith(btnContainer);
-  return µ(`#${id}`);
+  const boundClick = click.bind(null, val, self);
+  document.getElementById(id).addEventListener("click", boundClick);
+  return {id: id, text: text, btnClass: btnClass, val: val, clickFn: click.name};
 };
 
 // Time Saving Functions

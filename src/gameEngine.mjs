@@ -1,14 +1,14 @@
 import {player} from './modules/sweetAlerts.mjs';
-import {log, µ, asyncForEach} from './modules/env.mjs';
-import {introClick, goRight, goLeft, enterHome, findingHomeClick} from './modules/clickFunctions.mjs';
 import {newBtn} from './modules/gameFunctions.mjs';
+import {introClick} from './modules/clickFunctions.mjs';
 
 const gameEngine = async function(){
   try {
   const game = {
     startGame: async function() {
       game.player = await player();
-      game.buttons = [newBtn({id: 'introButton', click: 'introClick(1)', text: 'Panic!', self: this})];
+      game.buttons = [newBtn({id: 'introButton', click: introClick, val: 1, text: 'Panic!', self: this})];
+      console.log(this)
       return this;
     },
   };
