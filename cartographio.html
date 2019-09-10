@@ -12,15 +12,6 @@
 </body>
 <script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>
 <script>
-	const createEl = () => {
-		const newDiv = document.createElement("div");
-		const newContent = document.createTextNode("Hi!");
-		newDiv.appendChild(newContent);
-		newDiv.setAttribute("style", "position: absolute; color: red; background: black; left: 11px; top: 11px; width: 5.6vw; height: 22.4vh");
-		const currentDiv = document.getElementById('mapDisplay');
-		currentDiv.appendChild(newDiv);
-	};
-	createEl();
 
 	const canvas = rough.canvas(document.getElementById('mapPort'));
   const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
@@ -39,11 +30,13 @@
   ];
 	const mapSize = 600,
     borderWidth = 20,
-	  portSize = mapSize + borderWidth;
+	  portSize = mapSize + borderWidth,
+    cellWidth = mapSize/mapTemplate.length;
 	canvas.rectangle(10, 10, portSize, portSize); // ................................................<-A simple border-<
 
+  //const buildTile = function(xLocation, yLocation){};
+
 	const drawCell = function(xLocation, yLocation, cell) {
-		let cellWidth = mapSize/mapTemplate.length;
 		const
       xCoordinateLow = borderWidth + (cellWidth * xLocation),
       xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth,
@@ -55,6 +48,15 @@
 			{p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //.........<-bottom-<
 			{p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, // ............<-left-<
 		];
+
+		const parentPort = document.getElementById('mapDisplay');
+		const newTile = document.createElement("div"),
+			tileContent = document.createTextNode(`${xLocation}:${yLocation}Ð`);
+		newTile.appendChild(tileContent);
+		newTile.setAttribute("id", `${xLocation}-${yLocation}`);
+		newTile.setAttribute("style", `display:block; background:#F157ED; border:#0DADD1 1px solid; height:${cellWidth}px; width:${cellWidth}px; position:absolute; top:${xCoordinateLow}px; left:${yCoordinateLow}px;`);
+		parentPort.append(newTile);
+
 		cell.forEach((wall, index) => {
 			if(wall === 1) {
 				return canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
@@ -64,7 +66,7 @@
 
 	mapTemplate.forEach((row, yIter) => {
 		row.forEach((cell, xIter) => {
-			drawCell(xIter, yIter, cell)
+			drawCell(xIter, yIter, cell);
     })
   });
 </script>
