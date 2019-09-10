@@ -3,8 +3,6 @@ import {asyncForEach, µ, grabAll, log} from './env.mjs';
 
 // Click Functions
 export const introClick = (clickValue, game) => {
-  log(`Click value is: ${JSON.stringify(clickValue)}`);
-  log(`Meanwhile, you passed this for the game engine: ${game}`);
   const player = game.player.value;
   player.incHealth(clickValue);
   nodeContent('healthUILeveled', player.health, true, 'bounce');
