@@ -7,7 +7,8 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx parcel ./src/new-index.html",
+    "build": "npx parcel build ./src/new-index.html"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,18 @@
     "url": "https://github.com/anandamideio/the-expanse/issues"
   },
   "homepage": "https://github.com/anandamideio/the-expanse#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.6.0",
+    "@sweetalert2/theme-dark": "^2.1.0",
+    "bulma": "^0.7.5",
+    "izitoast": "^1.4.0",
+    "sweetalert2": "^8.17.1"
+  },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-syntax-async-generators": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.0",
     "@getify/eslint-plugin-proper-ternary": "^3.0.1",
     "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.0.0",
@@ -27,8 +39,8 @@
     "eslint-plugin-security": "^1.4.0"
   },
   "engines": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
+    "node": "12.10.0",
+    "npm": "6.11.3"
   },
   "eslintConfig": {
     "plugins": [
