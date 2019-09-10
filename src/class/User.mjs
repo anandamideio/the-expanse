@@ -1,6 +1,9 @@
-// User Class
-export class User {
-  _health = 0;
+/* ==========================================================================
+//                                 User Class                              //
+============================================================================*/
+
+export class User { // These are outside of the constructor to be compliant with public field declarations:
+  _health = 0; // See this for more info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Field_declarations
   _money = 0;
   _awareness = 0;
   _karma = 0;
