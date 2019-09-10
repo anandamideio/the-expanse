@@ -1,5 +1,5 @@
 import {createNewPlayer} from './userFunctions.mjs';
-import Swal from '../../../node_modules/sweetalert2/dist/sweetalert2.min';
+import Swal from './../../../node_modules/sweetalert2/dist/sweetalert2.min';
 
 /* ==========================================================================
 //                           SweetAlert2 Functions                         //

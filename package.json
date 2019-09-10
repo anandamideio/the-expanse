@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -dr ./dist && rm -dr ./.cache",
     "dev": "npm run clean && npx parcel ./src/index.html",
-    "build": "npx parcel build ./src/index.html"
+    "build": "npm run clean && npx parcel build ./src/index.html"
   },
   "repository": {
     "type": "git",

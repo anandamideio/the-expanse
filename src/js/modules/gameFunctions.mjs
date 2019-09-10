@@ -1,5 +1,5 @@
 import {asyncForEach, µ, grabAll} from './env.mjs';
-import * as iziToast from '../../../node_modules/izitoast/dist/js/iziToast.min'
+import * as iziToast from './../../../node_modules/izitoast/dist/js/iziToast.min'
 
 /* ==========================================================================
 //                           Time Saving Functions                         //
