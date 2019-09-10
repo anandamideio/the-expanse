@@ -1,4 +1,4 @@
-import {nodeContent, nodeVisToggle} from './gameFunctions.mjs';
+import {nodeContent, nodeVisToggle, notify} from './gameFunctions.mjs';
 import {asyncForEach, µ, grabAll, log} from './env.mjs';
 
 /* ==========================================================================
@@ -11,25 +11,21 @@ import {asyncForEach, µ, grabAll, log} from './env.mjs';
 
 // 00 - Increase health from 0 -> 15, create the map
 export const introClick = (clickValue, game) => {
+  // Grab the player from the engine
   const player = game.player.value;
+  // Increase the player's health
   player.incHealth(clickValue);
-  nodeContent('healthUILeveled', player.health, true, 'bounce');
+
+  nodeContent('healthUI', player.health, true, 'bounce');
+
   if (player.health === 2) {
-    iziToast.show({
-      title: 'Hey',
-      message: 'You\'re still Alive?',
-      position: 'topRight',
-    });
+    notify({ title: 'Hey', message: 'You\'re still Alive?'});
   } else if (player.health === 5) {
     nodeContent('introButton', 'Cough');
   } else if (player.health === 6) {
     nodeContent('messageUI', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
   } else if (player.health === 7) {
-    iziToast.show({
-      title: 'Hmmm..',
-      message: 'You should probably take it slow, you don\'t look so good.',
-      position: 'topRight',
-    });
+    notify({ title: 'Hmmm..', message: 'You should probably take it slow, you don\'t look so good.'});
   } else if (player.health === 8 || player.health === 9) {
     nodeContent('messageUI', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
   } else if (player.health === 10) {
@@ -39,10 +35,10 @@ export const introClick = (clickValue, game) => {
     µ('#introButton').replaceWith('<button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="button is-info is-medium">Look Around</button>');
     nodeVisToggle(['map'], 'hidden');
     nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
-    nodeContent('healthUILeveled', player.health, true, 'bounce');
-    nodeContent('moneyUILeveled', player.money, true, 'bounce');
-    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
-    nodeContent('karmaUILeveled', player.karma, true, 'bounce');
+    nodeContent('healthUI', player.health, true, 'bounce');
+    nodeContent('moneyUI', player.money, true, 'bounce');
+    nodeContent('awarenessUI', player.awareness, true, 'bounce');
+    nodeContent('karmaUI', player.karma, true, 'bounce');
     createMap(1);
     return createPlayer(36, 20);
   }
@@ -52,7 +48,7 @@ export const findingHomeClick = (clickValue) => {
   if (player.awareness <= 16) {
     nodeContent('messageUI', 'You make your way slowly down the alley');
     player.incAwareness(clickValue);
-    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
+    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -64,7 +60,7 @@ export const findingHomeClick = (clickValue) => {
     nodeContent('messageUI', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
     nodeContent('locationUILeveled', player.location, true, 'bounce');
     player.incAwareness(clickValue);
-    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
+    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -76,7 +72,7 @@ export const findingHomeClick = (clickValue) => {
     deleteScripts();
     createMap(2);
     player.incAwareness(clickValue);
-    nodeContent('awarenessUILeveled', player.awareness, true, 'bounce');
+    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     createPlayer(yPosition, xPosition);

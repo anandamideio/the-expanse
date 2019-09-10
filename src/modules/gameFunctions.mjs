@@ -68,4 +68,9 @@ export const nodeContent = (selectedNode, content, animate, animation) => {
     document.getElementById(selectedNode).innerHTML = `${content}`;
   }
 };
-export default {nodeVisToggle, nodeContent, newBtn, healthCheck};
+
+// 04 - Creates a toast notification: {title: string, message: string}
+export const notify = ({title: title, message: msg} = {}) => {
+  return iziToast.show.bind(null, {title: title, message: msg, position: 'topRight'});
+} ;
+export default {nodeVisToggle, nodeContent, newBtn, healthCheck, notify};
