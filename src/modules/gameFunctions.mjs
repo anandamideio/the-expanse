@@ -4,7 +4,7 @@ import {asyncForEach, µ, grabAll} from './env.mjs';
 //                           Time Saving Functions                         //
 =============================================================================
                               TABLE OF CONTENTS
- =============================================================================
+ ============================================================================
  0. healthCheck - Perform a health check on the player (via the engine)
  1. newBtn - Create a new button with an attached event listener
  2. nodeVisToggle - toggle a class

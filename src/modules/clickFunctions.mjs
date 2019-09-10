@@ -1,7 +1,15 @@
 import {nodeContent, nodeVisToggle} from './gameFunctions.mjs';
 import {asyncForEach, µ, grabAll, log} from './env.mjs';
 
-// Click Functions
+/* ==========================================================================
+//                             Click Functions                             //
+=============================================================================
+                              TABLE OF CONTENTS
+ ============================================================================
+ 0. introClick - Increase health from 0 -> 15, create the map
+ ===========================================================================*/
+
+// 00 - Increase health from 0 -> 15, create the map
 export const introClick = (clickValue, game) => {
   const player = game.player.value;
   player.incHealth(clickValue);

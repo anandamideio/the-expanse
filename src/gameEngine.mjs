@@ -2,6 +2,11 @@ import {player} from './modules/sweetAlerts.mjs';
 import {newBtn} from './modules/gameFunctions.mjs';
 import {introClick} from './modules/clickFunctions.mjs';
 
+/* ==========================================================================
+//                                 Game Engine                             //
+===========================================================================*/
+
+// The game engine is an object invoked via this function
 const gameEngine = async function(){
   try {
   const game = {
@@ -17,4 +22,5 @@ const gameEngine = async function(){
   } catch (e) { console.error(e); }
 };
 
+// Invoke the Game Engine
 gameEngine().catch(err => console.error(err));
