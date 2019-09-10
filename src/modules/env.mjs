@@ -1,4 +1,4 @@
-// A shorthand for our log
+// Shorthand for our log
 export const log = console.log;
 
 // Async for each
@@ -56,46 +56,32 @@ export const µAll = async(selector) => {
       if (el) return el;
       return document.querySelectorAll(selector)
     },
-    async toggleClass(className) {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.classList.toggle(className);
-      });
+    toggleClass(className) {
+      el.forEach((singleEl) => { singleEl.classList.toggle(className); });
       return this;
     },
-    async addClass(className) {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.classList.add(className);
-      });
+    addClass(className) {
+      el.forEach((singleEl) => { singleEl.classList.add(className); });
       return this;
     },
-    async removeClass(className) {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.remove(className);
-      });
+    removeClass(className) {
+      el.forEach((singleEl) => { singleEl.remove(className); });
       return this;
     },
-    async replaceWith(string) {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.outerHTML = string;
-      });
+    replaceWith(string) {
+      el.forEach(async(singleEl) => { await singleEl.outerHTML = string; });
       return this;
     },
-    async html(string) {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.innerHTML = string;
-      });
+    html(string) {
+      el.forEach((singleEl) => { singleEl.innerHTML = string; });
       return this;
     },
-    async remove() {
-      await asyncForEach(async(singleEl) => {
-        await singleEl.parentNode.removeChild(el);
-      });
+    remove() {
+      el.forEach((singleEl) => { singleEl.parentNode.removeChild(el);});
       return this;
     },
-    async text(string) {
-     el.forEach((singleEl) => {
-       singleEl.textContent = string.toString();
-      });
+    text(string) {
+     el.forEach((singleEl) => { singleEl.textContent = string.toString(); });
       return this;
     },
   };
