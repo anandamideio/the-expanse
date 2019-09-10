@@ -2,14 +2,14 @@
   "name": "the-expanse",
   "version": "1.0.0",
   "description": "",
-  "main": "src/new-index.html",
+  "main": "dist/index.html",
   "directories": {
     "doc": "doc"
   },
   "scripts": {
     "clean": "rm -dr ./dist && rm -dr ./.cache",
-    "dev": "npm run clean && npx parcel ./src/new-index.html",
-    "build": "npm run clean && npx parcel build ./src/new-index.html"
+    "dev": "npm run clean && npx parcel ./src/index.html",
+    "build": "npx parcel build ./src/index.html"
   },
   "repository": {
     "type": "git",
