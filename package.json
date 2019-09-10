@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -dr ./dist && rm -dr ./.cache",
     "dev": "npm run clean && npx parcel ./src/index.html",
-    "build": "npm run clean && npx parcel build ./src/index.html --target browser"
+    "build": "npm run clean && npx parcel build ./src/index.html --public-url ./the-expanse/dist/"
   },
   "repository": {
     "type": "git",
