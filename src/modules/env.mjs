@@ -65,11 +65,11 @@ export const µAll = async(selector) => {
       return this;
     },
     removeClass(className) {
-      el.forEach((singleEl) => { singleEl.remove(className); });
+      el.forEach((singleEl) => { singleEl.classList.remove(className); });
       return this;
     },
     replaceWith(string) {
-      el.forEach(async(singleEl) => { await singleEl.outerHTML = string; });
+      el.forEach((singleEl) => { singleEl.outerHTML = string; });
       return this;
     },
     html(string) {
