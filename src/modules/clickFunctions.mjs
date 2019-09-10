@@ -1,6 +1,8 @@
 import {nodeContent, nodeVisToggle} from './gameFunctions.mjs';
+import {asyncForEach, µ, grabAll, log} from './env.mjs';
 
 // Click Functions
+
 export const introClick = (clickValue) => {
   player.incHealth(clickValue);
   nodeContent('healthUILeveled', player.health, true, 'bounce');
@@ -26,7 +28,7 @@ export const introClick = (clickValue) => {
     nodeContent('introButton', 'Breathe');
     nodeContent('messageUI', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
   } else if (player.health === 15) {
-    $('#introButton').replaceWith('<button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="button is-info is-medium">Look Around</button>');
+    µ('#introButton').replaceWith('<button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="button is-info is-medium">Look Around</button>');
     nodeVisToggle(['map'], 'hidden');
     nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
     nodeContent('healthUILeveled', player.health, true, 'bounce');

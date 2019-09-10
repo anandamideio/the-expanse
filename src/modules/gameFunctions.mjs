@@ -4,12 +4,32 @@ import {asyncForEach, µ, grabAll} from './env.mjs';
 const buttonAreaStart = `<div class="content" id="buttonArea">`;
 const divClose = `</div>`;
 
+const healthCheck = function(game) {
+  const playerHealth = game.player.value.health;
+  let healthLvl;
+  if (playerHealth < 4){healthLvl = 'nearDeath'};
+  return healthLvl;
+}
+
 // Create a new button with your style
-export const newBtn = ({id: id, click: click, btnClass: btnClass, text: text} = {}) => {
+export const newBtn = ({id: id, click: click, text: text, self: self} = {}) => {
+  const healthLvl = healthCheck(self);
+  let btnClass;
+  switch(healthLvl){
+    case 'nearDeath':
+      btnClass = 'button is-black is-medium';
+      break;
+    case 'lowHealth':
+      btnClass = 'button is-gray is-medium';
+      break;
+    default:
+      btnClass = 'button is-blue is-medium';
+  }
   const btnContainer = `${buttonAreaStart}
     <button type="button" onClick="${click}" id="${id}" class="${btnClass}">${text}</button>
   ${divClose}`;
   µ('#buttonArea').replaceWith(btnContainer);
+  return µ(`#${id}`);
 };
 
 // Time Saving Functions

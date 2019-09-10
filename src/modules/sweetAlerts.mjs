@@ -9,7 +9,7 @@ export const player = async() => {
     showCancelButton: false,
     confirmButtonText: 'Submit',
     showLoaderOnConfirm: true,
-    preConfirm: async(username) => { const newPLayer = await createNewPlayer(username); return newPlayer; },
+    preConfirm: async(username) => { const newPlayer = await createNewPlayer(username); return newPlayer; },
     allowOutsideClick: async() => { const newPlayer = await createNewPlayer('The Unnamed One'); return newPlayer; },
   });
   return newPlayer;

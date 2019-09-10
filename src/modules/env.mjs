@@ -1,4 +1,4 @@
-export const log = console.log();
+export const log = console.log;
 // Grab whatever element on a page you need (Acts as a replacement for jquery)
 export const µ = function(selector) {
   let el;

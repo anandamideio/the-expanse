@@ -1,4 +1,5 @@
 import User from '../class/User.mjs';
+import {nodeContent} from './gameFunctions.mjs';
 
 // Create a new instance of the player class
 export const createNewPlayer = async(inputName) => {
