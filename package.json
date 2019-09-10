@@ -2,7 +2,7 @@
   "name": "the-expanse",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.html",
+  "browser": "dist/index.html",
   "directories": {
     "doc": "doc"
   },
