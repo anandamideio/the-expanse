@@ -1,20 +1,20 @@
 // User Class
 export class User {
+  _health = 0;
+  _money = 0;
+  _awareness = 0;
+  _karma = 0;
+  _intelligence = 0;
+  _strength = 0;
+  _creativity = 0;
+  _perception = 0;
+  _charisma = 0;
+  _location = 'a dirty alley';
+  _statPoints = 28;
+  _perkPoints = 1;
+  _perks = [];
   constructor(name) {
     this._name = name;
-    this._health = 0;
-    this._money = 0;
-    this._awareness = 0;
-    this._karma = 0;
-    this._intelligence = 0;
-    this._strength = 0;
-    this._creativity = 0;
-    this._perception = 0;
-    this._charisma = 0;
-    this._location = 'a dirty alley';
-    this._statPoints = 28;
-    this._perkPoints = 1;
-    this._perks = [];
   }
 
   get name() { return this._name; }

@@ -7,8 +7,8 @@ const gameEngine = async function(){
   const game = {
     startGame: async function() {
       game.player = await player();
-      game.buttons = [newBtn({id: 'introButton', click: introClick, val: 1, text: 'Panic!', self: this})];
-      console.log(this)
+      game.buttons = [newBtn({id: 'introButton', click: introClick, val: 1, text: 'Panic!', engine: this})];
+      console.log(this);
       return this;
     },
   };

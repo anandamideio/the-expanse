@@ -1,44 +1,48 @@
 import {asyncForEach, µ, grabAll} from './env.mjs';
 
-// Variables
-const buttonAreaStart = `<div class="content" id="buttonArea">`;
-const scriptAreaStart = `<div id="scriptArea">`
-const divClose = `</div>`;
+/* ==========================================================================
+//                           Time Saving Functions                         //
+=============================================================================
+                              TABLE OF CONTENTS
+ =============================================================================
+ 0. healthCheck - Perform a health check on the player (via the engine)
+ 1. newBtn - Create a new button with an attached event listener
+ 2. nodeVisToggle - toggle a class
+ 3. nodeContent - Change the contents of a node on the DOM
+ ===========================================================================*/
 
-
-// Performs a health check on the player when passed the game engine
-const healthCheck = function(game) {
-  const playerHealth = game.player.value.health;
-  let healthLvl;
-  if (playerHealth < 4){healthLvl = 'nearDeath'};
-  if (playerHealth >= 4 && playerHealth <= 10){healthLvl = 'lowHealth'};
+// 00 - Performs a health check on the player when passed the game engine
+export const healthCheck = function(game) {
+  const playerHealth = game.player.value.health; let healthLvl;
+  if (playerHealth < 4) {healthLvl = 'nearDeath';}
+  if (playerHealth >= 4 && playerHealth <= 10){healthLvl = 'lowHealth'}
   return healthLvl;
-}
+};
 
-// Create a new button with your style
-export const newBtn = ({id: id, click: click, val: val, text: text, self: self} = {}) => {
-  const healthLvl = healthCheck(self);
-  let btnClass;
+// 01 - Create a new button with an attached event listener the fires the function you pass
+export const newBtn = ({id: id, click: click, val: val, text: text, engine: engine} = {}) => {
+  // Variable Declarations
+  const buttonAreaStart = `<div class="content" id="buttonArea">`, divClose = `</div>`; let btnClass;
+  // First pass the engine (containing our User class) to a health check function, which is passed to the switch below
+  const healthLvl = healthCheck(engine);
+  // so we can get the class for the button (color is dependent on health level)
   switch(healthLvl){
-    case 'nearDeath':
-      btnClass = 'button is-black is-medium';
-      break;
-    case 'lowHealth':
-      btnClass = 'button is-gray is-medium';
-      break;
-    default:
-      btnClass = 'button is-blue is-medium';
-  }
-  const btnContainer = `${buttonAreaStart}
-    <button type="button" id="${id}" class="${btnClass}">${text}</button>
-  ${divClose}`;
+    case 'nearDeath': btnClass = 'button is-black is-medium'; break;
+    case 'lowHealth': btnClass = 'button is-gray is-medium'; break;
+    default: btnClass = 'button is-blue is-medium'; }
+  // Now we make the string containing the HTML for our button
+  const btnContainer = `${buttonAreaStart}  <button type="button" id="${id}" class="${btnClass}">${text}</button> ${divClose}`;
+  // Replace the current button / button area with the string above
   µ('#buttonArea').replaceWith(btnContainer);
-  const boundClick = click.bind(null, val, self);
+  // Bind the value passed, and the engine to be passed to the click function that our event listener will fire
+  const boundClick = click.bind(null, val, engine);
+  // Create our event listener
   document.getElementById(id).addEventListener("click", boundClick);
+  // Return a record of the button for the engine
   return {id: id, text: text, btnClass: btnClass, val: val, clickFn: click.name};
 };
 
-// Time Saving Functions
+// 02 - Toggle a Class
 export const nodeVisToggle = (toggleNode, className) => {
   if (Array.isArray(toggleNode)) { // if passed an array of things to toggle visibility of, toggle all
     for (let step = 0; step < toggleNode.length; step++) {
@@ -49,6 +53,7 @@ export const nodeVisToggle = (toggleNode, className) => {
   }
 };
 
+// 03 - Toggle the content of a node on the DOM tree, and animate the change if you want
 export const nodeContent = (selectedNode, content, animate, animation) => {
   const element = document.querySelector(`#${selectedNode}`);
   const handleAnimationEnd = () => {
@@ -63,4 +68,4 @@ export const nodeContent = (selectedNode, content, animate, animation) => {
     document.getElementById(selectedNode).innerHTML = `${content}`;
   }
 };
-export default {nodeVisToggle, nodeContent, newBtn};
+export default {nodeVisToggle, nodeContent, newBtn, healthCheck};
