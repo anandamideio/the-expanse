@@ -5,9 +5,7 @@
   "browser": "dist/index.html",
   "scripts": {
     "dev": "npx parcel ./src/index.html",
-    "build": "npx parcel build ./src/index.html --public-url ./ --experimental-scope-hoisting",
-    "cartoDev": "npx parcel ./src/cartographio.html",
-    "cartoBuild": "npx parcel build ./src/cartographio.html --public-url ./ --experimental-scope-hoisting"
+    "build": "npx parcel build ./src/index.html --public-url ./ --experimental-scope-hoisting"
   },
   "repository": {
     "type": "git",

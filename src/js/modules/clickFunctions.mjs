@@ -1,5 +1,5 @@
-import {newBtn, nodeContent, nodeVisToggle, notify, story} from './gameFunctions.mjs';
-import {asyncForEach, µ, grabAll, log} from './env.mjs';
+import {newBtn, newBtns, nodeContent, nodeVisToggle, notify, story} from './gameFunctions.mjs';
+import {µ} from './env.mjs';
 import {createMap, createPlayer, redrawMap, deleteScripts, clearCanvas} from './mapFunctions';
 
 /* ==========================================================================
@@ -34,6 +34,7 @@ export const introClick = (clickValue, engine) => {
     player.money = 0;
     player.karma = 0;
     player.awareness = 0;
+    player.location = 'a dirty alley';
     engine.buttons.unshift(newBtn({id: 'findingHomeButton', click: findingHomeClick, val: 4, text: 'Look Around', engine: engine}));
     nodeVisToggle(['map'], 'hidden');
     story('You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?');
@@ -45,7 +46,7 @@ export const introClick = (clickValue, engine) => {
 export const findingHomeClick = (clickValue, engine) => {
   // Grab the player from the engine
   const player = engine.player.value;
-  let yPosition = 35, xPosition = 15, currentLocation = 'a dirty alley';
+  let yPosition = 35, xPosition = 15;
   if (player.awareness <= 16) {
     story('You make your way slowly down the alley');
     player.incAwareness(clickValue);
@@ -73,39 +74,30 @@ export const findingHomeClick = (clickValue, engine) => {
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     createPlayer(yPosition, xPosition);
-    µ('#findingHomeButton').replaceWith(`<button type="button" onClick="goLeft()" id="goLeftButton" class="button is-info is-medium">Go Left</button>
-                    <button type="button" onClick="goRight()" id="goRightButton" class="button is-info is-medium">Go Right</button>`);
+    newBtns([{id: 'goLeftButton', click: goLeft, val: 0, text: 'Go Left'}, {id: 'goRightButton', click: goRight, val: 0, text: 'Go Right'}], engine).forEach((btn) => engine.buttons.unshift(btn));
   }
 };
 
 export const goLeft = (engine) => {
-  // Grab the player from the engine
-  const player = engine.player.value;
-
-  player.location = 'In front of a home';
+  const player = engine.player.value;   // Grab the player from the engine
+  player.location = 'In front of a home.';
   story('You head left, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.')
   µ('#map').replaceWith('');
-  µ('#goLeftButton').replaceWith('');
-  µ('#goRightButton').replaceWith(' <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>');
+  engine.buttons.unshift(newBtn({id: 'enterHomeButton', click: enterHome, val: 0, text: 'Enter Home', engine: engine}));
 };
 
 export const goRight = (engine) => {
-  // Grab the player from the engine
-  const player = engine.player.value;
-
+  const player = engine.player.value; // Grab the player from the engine
   player.location = 'In front of a home.';
   story('You head right, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.')
   µ('#map').replaceWith('');
-  µ('#goLeftButton').replaceWith('');
-  µ('#goRightButton').replaceWith(' <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>');
+  engine.buttons.unshift(newBtn({id: 'enterHomeButton', click: enterHome, val: 0, text: 'Enter Home', engine: engine}));
 };
 
 export const enterHome = (engine) => {
-  // Grab the player from the engine
-  const player = engine.player.value;
-
+  const player = engine.player.value; // Grab the player from the engine
   player.location = 'Home';
-  nodeContent('messageUI', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
+  story('You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
   nodeVisToggle(['enterHomeButton'], 'hidden');
   return clockState = setInterval(healthTimer, 1000);
 };
