@@ -9,7 +9,9 @@
   "scripts": {
     "clean": "rm -dr ./dist && rm -dr ./.cache",
     "dev": "npm run clean && npx parcel ./src/index.html",
-    "build": "npm run clean && npx parcel build ./src/index.html --public-url ./"
+    "build": "npx parcel build ./src/index.html --public-url ./",
+    "cartoDev": "npx parcel ./src/cartographio.html",
+    "cartoBuild": "npx parcel build ./src/cartographio.html --public-url ./"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,10 @@
     "@sweetalert2/theme-dark": "^2.1.0",
     "animate.css": "^3.7.2",
     "bulma": "^0.7.5",
+    "interactjs": "^1.4.0-rc.13",
     "izitoast": "^1.4.0",
     "normalize.css": "^8.0.1",
+    "roughjs": "^3.1.0",
     "sweetalert2": "^8.17.1"
   },
   "devDependencies": {
