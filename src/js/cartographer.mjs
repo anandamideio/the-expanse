@@ -1,4 +1,5 @@
-import {interact} from './vendor/interact.min.js';
+import interact from 'interactjs';
+import rough from '../../node_modules/roughjs/dist/rough-async.umd';
 const tiles = document.querySelectorAll('.mapTile');
 const canvas = rough.canvas(document.getElementById('mapPort'));
 const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
