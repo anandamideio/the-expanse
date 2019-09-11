@@ -2,87 +2,88 @@
 //                                 User Class                              //
 ============================================================================*/
 
-export class User { // These are outside of the constructor to be compliant with public field declarations:
-  _health = 0; // See this for more info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Field_declarations
-  _money = 0;
-  _awareness = 0;
-  _karma = 0;
-  _intelligence = 0;
-  _strength = 0;
-  _creativity = 0;
-  _perception = 0;
-  _charisma = 0;
-  _location = 'a dirty alley';
-  _statPoints = 28;
-  _perkPoints = 1;
-  _perks = [];
+export class User { // These are outside of the constructor to be compliant with private field declarations:
+  #health = 0; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Field_declarations
+  #name;
+  #money = 0;
+  #awareness = 0;
+  #karma = 0;
+  #intelligence = 0;
+  #strength = 0;
+  #creativity = 0;
+  #perception = 0;
+  #charisma = 0;
+  #location = 'a dirty alley';
+  #statPoints = 28;
+  #perkPoints = 1;
+  #perks = [];
   constructor(name) {
-    this._name = name;
+    this.#name = name;
   }
 
-  get name() { return this._name; }
-  set name(value) { this._name = value; }
+  get name() { return this.#name; }
+  set name(value) { this.#name = value; }
 
-  get health() { return this._health; }
-  set health(value) { this._health = value; }
-  incHealth(clickValue) { this._health += clickValue; }
-  subHealth(clickValue) { this._health -= clickValue; }
+  get health() { return this.#health; }
+  set health(value) { this.#health = value; }
+  incHealth(clickValue) { this.#health += clickValue; }
+  subHealth(clickValue) { this.#health -= clickValue; }
 
-  get money() { return this._money; }
-  set money(value) { this._money = value; }
-  incMoney(clickValue) { this._money += clickValue; }
-  subMoney(clickValue) { this._money -= clickValue; }
+  get money() { return this.#money; }
+  set money(value) { this.#money = value; }
+  incMoney(clickValue) { this.#money += clickValue; }
+  subMoney(clickValue) { this.#money -= clickValue; }
 
-  get awareness() { return this._awareness; }
-  set awareness(value) { this._awareness = value; }
-  incAwareness(clickValue) { this._awareness += clickValue; }
-  subAwareness(clickValue) { this._awareness -= clickValue; }
+  get awareness() { return this.#awareness; }
+  set awareness(value) { this.#awareness = value; }
+  incAwareness(clickValue) { this.#awareness += clickValue; }
+  subAwareness(clickValue) { this.#awareness -= clickValue; }
 
-  get karma() { return this._karma; }
-  set karma(value) { this._karma = value; }
-  incKarma(clickValue) { this._karma += clickValue; }
-  subKarma(clickValue) { this._karma -= clickValue; }
+  get karma() { return this.#karma; }
+  set karma(value) { this.#karma = value; }
+  incKarma(clickValue) { this.#karma += clickValue; }
+  subKarma(clickValue) { this.#karma -= clickValue; }
 
-  get intelligence() { return this._intelligence; }
-  set intelligence(value) { this._intelligence = value; }
-  incIntelligence(clickValue) { this._intelligence += clickValue; }
-  subIntelligence(clickValue) { this._intelligence -= clickValue; }
+  get intelligence() { return this.#intelligence; }
+  set intelligence(value) { this.#intelligence = value; }
+  incIntelligence(clickValue) { this.#intelligence += clickValue; }
+  subIntelligence(clickValue) { this.#intelligence -= clickValue; }
 
-  get strength() { return this._strength; }
-  set strength(value) { this._strength = value; }
-  incStrength(clickValue) { this._strength += clickValue; }
-  subStrength(clickValue) { this._strength -= clickValue; }
+  get strength() { return this.#strength; }
+  set strength(value) { this.#strength = value; }
+  incStrength(clickValue) { this.#strength += clickValue; }
+  subStrength(clickValue) { this.#strength -= clickValue; }
 
-  get creativity() { return this._creativity; }
-  set creativity(value) { this._creativity = value; }
-  incCreativity(clickValue) { this._creativity += clickValue; }
-  subCreativity(clickValue) { this._creativity -= clickValue; }
+  get creativity() { return this.#creativity; }
+  set creativity(value) { this.#creativity = value; }
+  incCreativity(clickValue) { this.#creativity += clickValue; }
+  subCreativity(clickValue) { this.#creativity -= clickValue; }
 
-  get charisma() { return this._charisma; }
-  set charisma(value) { this._charisma = value; }
-  incCharisma(clickValue) { this._charisma += clickValue; }
-  subCharisma(clickValue) { this._charisma -= clickValue; }
+  get charisma() { return this.#charisma; }
+  set charisma(value) { this.#charisma = value; }
+  incCharisma(clickValue) { this.#charisma += clickValue; }
+  subCharisma(clickValue) { this.#charisma -= clickValue; }
 
-  get perception() { return this._perception; }
-  set perception(value) { this._perception = value; }
-  incPerception(clickValue) { this._perception += clickValue; }
-  subPerception(clickValue) { this._perception -= clickValue; }
+  get perception() { return this.#perception; }
+  set perception(value) { this.#perception = value; }
+  incPerception(clickValue) { this.#perception += clickValue; }
+  subPerception(clickValue) { this.#perception -= clickValue; }
 
-  get statPoints() { return this._statPoints; }
-  set statPoints(value) { this._statPoints = value; }
-  incStatPoints(clickValue) { this._statPoints += clickValue; }
-  subStatPoints(clickValue) { this._statPoints -= clickValue; }
+  get statPoints() { return this.#statPoints; }
+  set statPoints(value) { this.#statPoints = value; }
+  incStatPoints(clickValue) { this.#statPoints += clickValue; }
+  subStatPoints(clickValue) { this.#statPoints -= clickValue; }
 
-  get perkPoints() { return this._perkPoints; }
-  set perkPoints(value) { this._perkPoints = value; }
-  incPerkPoints(clickValue) { this._perkPoints += clickValue; }
-  subPerkPoints(clickValue) { this._perkPoints -= clickValue; }
+  get perkPoints() { return this.#perkPoints; }
+  set perkPoints(value) { this.#perkPoints = value; }
+  incPerkPoints(clickValue) { this.#perkPoints += clickValue; }
+  subPerkPoints(clickValue) { this.#perkPoints -= clickValue; }
 
-  get location() { return this._location; }
-  set location(value) { this._location = value; }
-  setLocation(value) { this._location = value; }
+  get location() { return this.#location; }
+  set location(value) { this.#location = value; }
+  setLocation(value) { this.#location = value; }
 
-  get perks() { return this._perks; }
-  addperk(perk) { this._perks.push(perk); }
+  get perks() { return this.#perks; }
+  addperk(perk) { this.#perks.push(perk); }
 }
 export default User;
