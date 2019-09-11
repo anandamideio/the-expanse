@@ -1,0 +1,169 @@
+{
+  "name": "the-expanse",
+  "version": "1.0.0",
+  "description": "",
+  "browser": "dist/index.html",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "clean": "rm -dr ./dist && rm -dr ./.cache",
+    "dev": "npm run clean && npx parcel ./src/index.html",
+    "build": "npm run clean && npx parcel build ./src/index.html --public-url ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anandamideio/the-expanse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anandamideio/the-expanse/issues"
+  },
+  "homepage": "https://github.com/anandamideio/the-expanse#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.6.0",
+    "@sweetalert2/theme-dark": "^2.1.0",
+    "animate.css": "^3.7.2",
+    "bulma": "^0.7.5",
+    "izitoast": "^1.4.0",
+    "normalize.css": "^8.0.1",
+    "sweetalert2": "^8.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-syntax-async-generators": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.0",
+    "@getify/eslint-plugin-proper-ternary": "^3.0.1",
+    "cssnano": "^4.1.10",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-security": "^1.4.0"
+  },
+  "engines": {
+    "node": "12.10.0",
+    "npm": "6.11.3"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "node",
+      "security",
+      "@getify/proper-ternary"
+    ],
+    "extends": [
+      "airbnb-base",
+      "plugin:node/recommended",
+      "plugin:security/recommended",
+      "plugin:@getify/proper-ternary/getify-says"
+    ],
+    "env": {
+      "mongo": true,
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "strict": [
+        2,
+        "global"
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed",
+        {
+          "requireForBlockBody": true
+        }
+      ],
+      "no-unused-vars": "off",
+      "one-var": [
+        "error",
+        {
+          "var": "consecutive",
+          "let": "consecutive",
+          "const": "never"
+        }
+      ],
+      "one-var-declaration-per-line": "off",
+      "consistent-return": "off",
+      "func-names": "off",
+      "max-len": "off",
+      "no-unused-expressions": "off",
+      "no-console": "off",
+      "no-shadow": [
+        "error",
+        {
+          "hoist": "never",
+          "allow": [
+            "done",
+            "resolve",
+            "err",
+            "error",
+            "cb",
+            "User",
+            "user",
+            "issue"
+          ]
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": true,
+          "ignorePropertyModificationsFor": [
+            "realtor",
+            "tempRealtor",
+            "counters",
+            "user",
+            "selectedUser",
+            "client",
+            "employee",
+            "issue",
+            "res",
+            "userReturned"
+          ]
+        }
+      ],
+      "no-useless-escape": "off",
+      "no-lonely-if": "error",
+      "no-new-object": "error",
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "object-curly-newline": [
+        "error",
+        {
+          "multiline": true,
+          "consistent": true
+        }
+      ],
+      "no-underscore-dangle": "off",
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "object-shorthand": [
+        "error",
+        "consistent"
+      ],
+      "prefer-destructuring": "off",
+      "space-before-blocks": "off",
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
+      "prefer-rest-params": "off"
+    }
+  },
+  "nodemonConfig": {
+    "events": {
+      "start": "cls || clear"
+    },
+    "ignore": [
+      "log/"
+    ]
+  }
+}
