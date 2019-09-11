@@ -1,5 +1,6 @@
-import {asyncForEach, µ, grabAll} from './env.mjs';
-import * as iziToast from './../../../node_modules/izitoast/dist/js/iziToast.min'
+import {µ} from './env.mjs';
+import Button from '../class/Button.mjs';
+import iziToast from 'izitoast';
 
 /* ==========================================================================
 //                           Time Saving Functions                         //
@@ -10,6 +11,8 @@ import * as iziToast from './../../../node_modules/izitoast/dist/js/iziToast.min
  1. newBtn - Create a new button with an attached event listener
  2. nodeVisToggle - toggle a class
  3. nodeContent - Change the contents of a node on the DOM
+ 4. notify - Creates a toast notification
+ 5. story - Write to the story container
  ===========================================================================*/
 
 // 00 - Performs a health check on the player when passed the game engine
@@ -22,15 +25,16 @@ export const healthCheck = function(game) {
 
 // 01 - Create a new button with an attached event listener the fires the function you pass
 export const newBtn = ({id: id, click: click, val: val, text: text, engine: engine} = {}) => {
+  if (engine.buttons){engine.buttons = []}
   // Variable Declarations
-  const buttonAreaStart = `<div class="content" id="buttonArea">`, divClose = `</div>`; let btnClass;
+  const buttonAreaStart = `<div class="content" id="buttonArea">`, divClose = `</div>`; let btnClass, btnColor;
   // First pass the engine (containing our User class) to a health check function, which is passed to the switch below
   const healthLvl = healthCheck(engine);
   // so we can get the class for the button (color is dependent on health level)
   switch(healthLvl){
-    case 'nearDeath': btnClass = 'button is-black is-medium'; break;
-    case 'lowHealth': btnClass = 'button is-gray is-medium'; break;
-    default: btnClass = 'button is-blue is-medium'; }
+    case 'nearDeath': btnClass = 'button is-black is-medium'; btnColor = 'is-black'; break;
+    case 'lowHealth': btnClass = 'button is-gray is-medium'; btnColor = 'is-gray'; break;
+    default: btnClass = 'button is-blue is-medium'; btnColor = 'is-blue'; }
   // Now we make the string containing the HTML for our button
   const btnContainer = `${buttonAreaStart}  <button type="button" id="${id}" class="${btnClass}">${text}</button> ${divClose}`;
   // Replace the current button / button area with the string above
@@ -39,8 +43,8 @@ export const newBtn = ({id: id, click: click, val: val, text: text, engine: engi
   const boundClick = click.bind(null, val, engine);
   // Create our event listener
   document.getElementById(id).addEventListener("click", boundClick);
-  // Return a record of the button for the engine
-  return {id: id, text: text, btnClass: btnClass, val: val, clickFn: click.name};
+  // Create a new instance of the button class and return it to the engine
+  return new Button(id, boundClick, val, text, btnColor);
 };
 
 // 02 - Toggle a Class
@@ -72,6 +76,10 @@ export const nodeContent = (selectedNode, content, animate, animation) => {
 
 // 04 - Creates a toast notification: {title: string, message: string}
 export const notify = ({title: title, message: msg} = {}) => {
-  return iziToast.show.bind(null, {title: title, message: msg, position: 'topRight'});
+  return iziToast.show({title: title, message: msg, position: 'topRight'});
 } ;
-export default {nodeVisToggle, nodeContent, newBtn, healthCheck, notify};
+
+// 05 - Write a message on the story container
+export const story = (str) => { nodeContent('messageUI', str, true, 'fadeIn'); };
+
+export default {nodeVisToggle, nodeContent, newBtn, healthCheck, notify, story};

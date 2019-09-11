@@ -1,3 +1,5 @@
+import {nodeContent} from '../modules/gameFunctions.mjs';
+
 /* ==========================================================================
 //                                 User Class                              //
 ============================================================================*/
@@ -25,24 +27,24 @@ export class User { // These are outside of the constructor to be compliant with
   set name(value) { this.#name = value; }
 
   get health() { return this.#health; }
-  set health(value) { this.#health = value; }
-  incHealth(clickValue) { this.#health += clickValue; }
-  subHealth(clickValue) { this.#health -= clickValue; }
+  set health(value) { this.#health = value; nodeContent('healthUI', this.#health, true, 'bounce'); }
+  incHealth(clickValue) { this.#health += clickValue; nodeContent('healthUI', this.#health, true, 'bounce'); }
+  subHealth(clickValue) { this.#health -= clickValue; nodeContent('healthUI', this.#health, true, 'bounce');  }
 
   get money() { return this.#money; }
-  set money(value) { this.#money = value; }
-  incMoney(clickValue) { this.#money += clickValue; }
-  subMoney(clickValue) { this.#money -= clickValue; }
+  set money(value) { this.#money = value; nodeContent('moneyUI', this.#money, true, 'bounce'); }
+  incMoney(clickValue) { this.#money += clickValue; nodeContent('moneyUI', this.#money, true, 'bounce'); }
+  subMoney(clickValue) { this.#money -= clickValue; nodeContent('moneyUI', this.#money, true, 'bounce'); }
 
   get awareness() { return this.#awareness; }
-  set awareness(value) { this.#awareness = value; }
-  incAwareness(clickValue) { this.#awareness += clickValue; }
-  subAwareness(clickValue) { this.#awareness -= clickValue; }
+  set awareness(value) { this.#awareness = value; nodeContent('awarenessUI', this.#awareness, true, 'bounce');}
+  incAwareness(clickValue) { this.#awareness += clickValue; nodeContent('awarenessUI', this.#awareness, true, 'bounce');}
+  subAwareness(clickValue) { this.#awareness -= clickValue; nodeContent('awarenessUI', this.#awareness, true, 'bounce');}
 
   get karma() { return this.#karma; }
-  set karma(value) { this.#karma = value; }
-  incKarma(clickValue) { this.#karma += clickValue; }
-  subKarma(clickValue) { this.#karma -= clickValue; }
+  set karma(value) { this.#karma = value; nodeContent('karmaUI', this.#karma, true, 'bounce');}
+  incKarma(clickValue) { this.#karma += clickValue; nodeContent('karmaUI', this.#karma, true, 'bounce');}
+  subKarma(clickValue) { this.#karma -= clickValue; nodeContent('karmaUI', this.#karma, true, 'bounce');}
 
   get intelligence() { return this.#intelligence; }
   set intelligence(value) { this.#intelligence = value; }
@@ -80,8 +82,7 @@ export class User { // These are outside of the constructor to be compliant with
   subPerkPoints(clickValue) { this.#perkPoints -= clickValue; }
 
   get location() { return this.#location; }
-  set location(value) { this.#location = value; }
-  setLocation(value) { this.#location = value; }
+  set location(value) { this.#location = value; nodeContent('locationUI', this.#location, true, 'bounce');}
 
   get perks() { return this.#perks; }
   addperk(perk) { this.#perks.push(perk); }
