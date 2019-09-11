@@ -1,7 +1,7 @@
 import interact from 'interactjs';
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
 const tiles = document.querySelectorAll('.mapTile');
-const canvas = rough.canvas(document.getElementById('mapPort'));
+const canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: '../worker.js' });
 const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
   Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1], // /_______________<-Single walls-<
   NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1], // /____________________<-Corners-<
