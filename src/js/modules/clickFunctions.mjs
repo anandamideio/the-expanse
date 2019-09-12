@@ -38,6 +38,7 @@ export const introClick = (clickValue, engine) => {
     engine.buttons.unshift(newBtn({id: 'findingHomeButton', click: findingHomeClick, val: 4, text: 'Look Around', engine: engine}));
     nodeVisToggle(['map'], 'hidden');
     story('You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?');
+    engine.saveGame();
     createMap(1);
     return createPlayer(36, 20);
   }
