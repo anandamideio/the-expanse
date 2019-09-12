@@ -1,6 +1,6 @@
 import interact from 'interactjs';
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
-import {clearCanvas} from './modules/mapFunctions';
+// import {clearCanvas} from './modules/mapFunctions';
 const mapDisplay = document.getElementById('mapDisplay');
 const canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' });
 const smoothCanvas = document.getElementById('mapPort');
@@ -24,6 +24,7 @@ let mapTemplate = [
 const
   mapSize = 600,
   borderWidth = 20,
+  borderOffset = 10,
   portSize = mapSize + borderWidth,
   cellWidth = mapSize/mapTemplate.length,
   position = { x:0, y:0 };
@@ -69,11 +70,18 @@ const drawCell = function(yLocation, xLocation, tile) {
     wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
   })
 };
-
-//const drawTileBay = function
+const drawEditBay = function(){
+  const
+    editBorderOffset = portSize+(4*borderOffset),
+    editCellWidth = cellWidth+40,
+    editBaySize = 4*editCellWidth;
+  canvas.rectangle(editBorderOffset, borderOffset, editBaySize, editBaySize);
+  console.log(Object.values(cell));
+  //canvas.rectangle()
+};
 
 const drawMap = function(templateArray) {
-  canvas.rectangle(10, 10, portSize, portSize); //<-< -------------------------------------- <-A simple border-<
+  canvas.rectangle(borderOffset, borderOffset, portSize, portSize); //<-< -------------------------------------- <-A simple border-<
   templateArray.forEach((row, yIter) => {
     row.forEach((cell, xIter) => {
       drawCell(yIter, xIter, cell);
@@ -82,11 +90,12 @@ const drawMap = function(templateArray) {
 };
 const redrawMap = function() {
   deleteChildren(mapDisplay);
-  context.clearRect(0,0, portSize + borderWidth, portSize + borderWidth);
+  context.clearRect(5,5, portSize + borderWidth, portSize + borderWidth);
   drawMap(mapTemplate);
 };
 
 drawMap(mapTemplate);
+drawEditBay();
 //window.setInterval(redrawMap, 1000/12);
 const deleteChildren = function(parent) {
   let child = parent.lastElementChild;
