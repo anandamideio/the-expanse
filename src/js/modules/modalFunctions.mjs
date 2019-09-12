@@ -1,17 +1,13 @@
-import {µ, µAll} from '@abourass/micro'
+import {µ} from '@abourass/micro'
+import Modal from '../class/Modal.mjs';
 
 // Modal Interactions
-const modal = µ('#statAllocationModal'); // Get the modal
-const btn = µ('#allocatePersonalityButton'); // Get the button that opens the modal
-const span = µAll('.close')[0]; // Get the <span> element that closes the modal
-btn.onclick = function() { // When the user clicks on the button, open the modal
-  modal.style.display = 'block';
+
+// Create a new modal
+export const createModal = ({id: id, name: name, modalClass: modalClass, html: html, btnId: btnId, btn: btn} = {}) => {
+  const newModal = new Modal(id, name, modalClass, html);
+  µ('#modalBtnArea').replaceWith(`<div id="modalBtnArea">${btn}</div>`);
+  document.querySelector(`#${btnId}`).onclick = () => { newModal.show() }; // When the user clicks on the button, open the modal
+  return newModal;
 };
-span.onclick = function() { // When the user clicks on <span> (x), close the modal
-  modal.style.display = 'none';
-};
-window.onclick = function(event) { // When the user clicks anywhere outside of the modal, close it
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-};
+export default {createModal};

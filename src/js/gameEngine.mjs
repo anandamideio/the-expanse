@@ -1,6 +1,10 @@
 import {player} from './modules/sweetAlerts.mjs';
 import {newBtn} from './modules/gameFunctions.mjs';
 import {introClick} from './modules/clickFunctions.mjs';
+import {createModal} from './modules/modalFunctions';
+import fs from 'fs';
+const statHTML = fs.readFileSync('./src/modals/stats.html', 'utf-8'); // Moving this until I'm ready to create the statModal
+const statModal = createModal.bind(null, {id: 'testModal', name: 'Test Modal', modalClass: '', html: statHTML, btn: `<button type="button" class="button" id="openModal">Open Modal</button>`, btnId: 'openModal' });
 
 /* ==========================================================================
 //                                 Game Engine                             //

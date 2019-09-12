@@ -4,6 +4,7 @@
 # TEAM
 #   <name> -- <role> -- <twitter>
     Antonio Bourassa - Co-Creator - https://twitter.com/AntonioBourassa
+    Kyle Hagadorn - Co-Creator
 
 # THANKS
 
@@ -11,4 +12,4 @@
 
 # TECHNOLOGY COLOPHON
 
-    CSS3, HTML5, Bulma, Rough.JS, Modernizr, Normalize.css
+    CSS3, HTML5, Bulma, Rough.JS, Interact.js
