@@ -19,7 +19,7 @@ export const introClick = (clickValue, engine) => {
   player.incHealth(clickValue); // Increase the player's health
   if (player.health === 2) {
     notify({ title: 'Hey', message: 'You\'re still Alive?'});
-    engine.save();
+    engine.save(engine);
     log(`Our current engine is - ${JSON.stringify(engine)}`);
   } else if (player.health === 5) {
     btn.text = 'Cough';

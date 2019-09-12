@@ -86,5 +86,13 @@ export class User { // These are outside of the constructor to be compliant with
 
   get perks() { return this.#perks; }
   addperk(perk) { this.#perks.push(perk); }
+  toJSON() {
+    const tmp = {};
+    for(const key in this) {
+      if(typeof this[key] !== 'function')
+        tmp[key] = this[key];
+    }
+    return tmp;
+  }
 }
 export default User;

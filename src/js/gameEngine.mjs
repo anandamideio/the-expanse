@@ -3,6 +3,7 @@ import {newBtn} from './modules/gameFunctions.mjs';
 import {introClick} from './modules/clickFunctions.mjs';
 import {createModal} from './modules/modalFunctions';
 import fs from 'fs';
+import {extend} from './modules/extend';
 const statHTML = fs.readFileSync('./src/modals/stats.html', 'utf-8'); // Moving this until I'm ready to create the statModal
 const statModal = createModal.bind(null, {id: 'testModal', name: 'Test Modal', modalClass: '', html: statHTML, btn: `<button type="button" class="button" id="openModal">Open Modal</button>`, btnId: 'openModal' });
 
@@ -20,8 +21,10 @@ const gameEngine = async function(){
       return this;
     },
     save() {
-      console.log(engine);
-      window.localStorage.setItem('engine', JSON.stringify(engine));
+      const protoEngine = {};
+      protoEngine.player = Object.assign({ __proto__: this.player.value.__proto__ }, this.player.value.__proto__);
+      console.log(`protoEngine is -------- ${JSON.stringify(protoEngine)}`);
+      // window.localStorage.setItem('engine', JSON.stringify(protoEngine));
       return this;
     },
     load() {
@@ -35,6 +38,14 @@ const gameEngine = async function(){
       window.localStorage.removeItem('engine');
       return this;
     },
+    toJSON: function() {
+      const tmp = {};
+      for(const key in this) {
+        if(typeof this[key] !== 'function')
+          tmp[key] = this[key];
+      }
+      return tmp;
+    }
   };
   if (window.localStorage.getItem('engine') != null){ engine.load(); }
   else if (!engine.player){ await engine.startGame(); } // If no user has been created then lets run the user creation scripts
