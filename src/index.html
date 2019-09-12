@@ -38,7 +38,7 @@
               <p id="awarenessUI" class="title"></p>
             </div>
           </div>
-          <div class="level-item has-text-centered">
+          <div class="level-item has-text-centered" id="clearSave">
             <img src="img/logo.png" alt="">
           </div>
           <div class="level-item has-text-centered">
@@ -61,12 +61,9 @@
 
 <section class="section" style="padding-top: 0">
   <div class="container">
-
-
     <div id="statPadding">
       <br />
     </div>
-
     <section id="messageAndMap" class="columns">
       <article id="refinedMessageUI" class="column is-half">
         <div class="columns">
@@ -101,92 +98,17 @@
         </div>
       </article>
       <section id="map" class="hidden nes-container with-title is-centered">
-        <p class="title">Map - <span id="locationUILeveled"></span></p>
-        <canvas id="canvas" width="400" height="400"></canvas>
+        <a href="./cartographio.html">
+          <p class="title" id="mapLink">Map - <span id="locationUI"></span></p>
+          <canvas id="canvas" width="400" height="400"></canvas>
+        </a>
       </section>
     </section>
   </div>
 </section>
-<!-- Modal Zone -->
-<div id="statAllocationModal" class="modal">   <!-- Stat Allocation Modal -->
-  <div class="modal-content">     <!-- Modal content -->
-    <span class="close">&times;</span>
-    <p>It's time to create your new personality. Let's see what you have to work with:</p>
-    <div class="columns">
-      <div class="column">
-        Strength
-        <div class="level">
-          <div class="level-left">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-left"></i></span></a>
-          </div>
-          <div class="level-item">
-            <input type="text" id="strengthAllocate" class="is-stat-box" readonly>
-          </div>
-          <div class="level-right">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-right"></i></span></a>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        Intelligence
-        <div class="level">
-          <div class="level-left">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-left"></i></span></a>
-          </div>
-          <div class="level-item">
-            <input type="text" id="intAllocate" class="is-stat-box" readonly>
-          </div>
-          <div class="level-right">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-right"></i></span></a>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        Creativity
-        <div class="level">
-          <div class="level-left">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-left"></i></span></a>
-          </div>
-          <div class="level-item">
-            <input type="text" id="creativityAllocate" class="is-stat-box" readonly>
-          </div>
-          <div class="level-right">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-right"></i></span></a>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        Charisma
-        <div class="level">
-          <div class="level-left">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-left"></i></span></a>
-          </div>
-          <div class="level-item">
-            <input type="text" id="charismaAllocate" class="is-stat-box" readonly>
-          </div>
-          <div class="level-right">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-right"></i></span></a>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        Perception
-        <div class="level">
-          <div class="level-left">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-left"></i></span></a>
-          </div>
-          <div class="level-item">
-            <input type="text" id="perceptionAllocate" class="is-stat-box" readonly>
-          </div>
-          <div class="level-right">
-            <a class="button"><span class="icon is-small"><i class="fas fa-arrow-right"></i></span></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Modal Zone -->
+
+<div id="modalBtnArea"></div>
+<div id="modalArea"></div>
 <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 <script type="module" src="/js/gameEngine.mjs"></script>
 <script src="https://rawgit.com/pshihn/rough/master/dist/rough.js"></script>

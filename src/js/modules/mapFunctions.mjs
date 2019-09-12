@@ -1,4 +1,4 @@
-import {log, asyncForEach, µ, grabAll} from './env.mjs';
+import {µ} from '@abourass/micro'
 
 // Map Script
 export const createMap = (stages) => {
@@ -82,7 +82,7 @@ ac.rectangle(70, 100, 1000, 10, {
       document.body.appendChild(magicMapBase);
     }
   }
-}
+};
 
 // Redraw Map Script
 export const redrawMap = () => {

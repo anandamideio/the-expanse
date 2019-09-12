@@ -1,5 +1,7 @@
-import {nodeContent, nodeVisToggle, notify} from './gameFunctions.mjs';
-import {asyncForEach, µ, grabAll, log} from './env.mjs';
+import {newBtn, newBtns, nodeVisToggle, notify, story} from './gameFunctions.mjs';
+import {log} from './env.mjs';
+import {µ} from '@abourass/micro'
+import {createMap, createPlayer, redrawMap, deleteScripts, clearCanvas} from './mapFunctions';
 
 /* ==========================================================================
 //                             Click Functions                             //
@@ -10,45 +12,49 @@ import {asyncForEach, µ, grabAll, log} from './env.mjs';
  ===========================================================================*/
 
 // 00 - Increase health from 0 -> 15, create the map
-export const introClick = (clickValue, game) => {
-  // Grab the player from the engine
-  const player = game.player.value;
-  // Increase the player's health
-  player.incHealth(clickValue);
-
-  nodeContent('healthUI', player.health, true, 'bounce');
-
+export const introClick = (clickValue, engine) => {
+  const player = engine.player.value; // Grab the player from the engine
+  const btnArray = engine.buttons.filter(button => { return button.id === 'introButton'});
+  const btn = btnArray[0]; // Grab the button that is associated with this function
+  player.incHealth(clickValue); // Increase the player's health
   if (player.health === 2) {
     notify({ title: 'Hey', message: 'You\'re still Alive?'});
+    engine.save();
+    log(`Our current engine is - ${JSON.stringify(engine)}`);
   } else if (player.health === 5) {
-    nodeContent('introButton', 'Cough');
+    btn.text = 'Cough';
+    engine.save();
+    log(`Our current engine is - ${JSON.stringify(engine)}`);
   } else if (player.health === 6) {
-    nodeContent('messageUI', 'Your throat tightens painfully with each cough.', true, 'fadeIn');
+    story('Your throat tightens painfully with each cough.')
   } else if (player.health === 7) {
     notify({ title: 'Hmmm..', message: 'You should probably take it slow, you don\'t look so good.'});
   } else if (player.health === 8 || player.health === 9) {
-    nodeContent('messageUI', 'A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is. ', true, 'fadeIn');
+    story('A particularly hard cough leaves blood on the pavement next to your face. You are acutely aware of how raw your throat is.')
   } else if (player.health === 10) {
-    nodeContent('introButton', 'Breathe');
-    nodeContent('messageUI', 'You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..', true, 'fadeIn');
+    btn.text = 'Breathe';
+    btn.color = 'is-grey';
+    story('You realize you\'re laying on cold concrete, in an alley of some sort. Your head swims..')
   } else if (player.health === 15) {
-    µ('#introButton').replaceWith('<button type="button" onClick="findingHomeClick(4)" id="findingHomeButton" class="button is-info is-medium">Look Around</button>');
-    nodeVisToggle(['map'], 'hidden');
-    nodeContent('messageUI', 'You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?', true, 'fadeIn');
-    nodeContent('healthUI', player.health, true, 'bounce');
-    nodeContent('moneyUI', player.money, true, 'bounce');
-    nodeContent('awarenessUI', player.awareness, true, 'bounce');
-    nodeContent('karmaUI', player.karma, true, 'bounce');
-    createMap(1);
-    return createPlayer(36, 20);
+    player.money = 0;
+    player.karma = 0;
+    player.awareness = 0;
+    player.location = 'a dirty alley';
+    engine.buttons.unshift(newBtn({id: 'findingHomeButton', click: findingHomeClick, val: 4, text: 'Look Around', engine: engine}));
+    // nodeVisToggle(['map'], 'hidden');
+    story('You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?');
+    // createMap(1);
+    // return createPlayer(36, 20);
   }
 };
 
-export const findingHomeClick = (clickValue) => {
+export const findingHomeClick = (clickValue, engine) => {
+  // Grab the player from the engine
+  const player = engine.player.value;
+  let yPosition = 35, xPosition = 15;
   if (player.awareness <= 16) {
-    nodeContent('messageUI', 'You make your way slowly down the alley');
+    story('You make your way slowly down the alley');
     player.incAwareness(clickValue);
-    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -56,11 +62,9 @@ export const findingHomeClick = (clickValue) => {
     redrawMap();
     createPlayer(yPosition, xPosition);
   } else if (player.awareness >= 17 && player.awareness <= 20) {
-    player.setLocation('The City');
-    nodeContent('messageUI', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
-    nodeContent('locationUILeveled', player.location, true, 'bounce');
+    player.location = 'The City';
+    story('After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
     player.incAwareness(clickValue);
-    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     clearCanvas();
@@ -68,40 +72,37 @@ export const findingHomeClick = (clickValue) => {
     redrawMap();
     createPlayer(yPosition, xPosition);
   } else if (player.awareness === 24) {
-    nodeContent('messageUI', 'After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
+    story('After limping to the end of the alley you\'ve made it to an unfamiliar street. Where to now?');
     deleteScripts();
     createMap(2);
     player.incAwareness(clickValue);
-    nodeContent('awarenessUI', player.awareness, true, 'bounce');
     yPosition += clickValue / 4;
     xPosition += clickValue * 4;
     createPlayer(yPosition, xPosition);
-    $('#findingHomeButton').replaceWith(`<button type="button" onClick="goLeft()" id="goLeftButton" class="button is-info is-medium">Go Left</button>
-                    <button type="button" onClick="goRight()" id="goRightButton" class="button is-info is-medium">Go Right</button>`);
+    newBtns([{id: 'goLeftButton', click: goLeft, val: 0, text: 'Go Left'}, {id: 'goRightButton', click: goRight, val: 0, text: 'Go Right'}], engine).forEach((btn) => engine.buttons.unshift(btn));
   }
 };
 
-export const goLeft = () => {
-  player.setLocation('In front of a home');
-  nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI', 'You head left, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
-  $('#map').replaceWith('');
-  $('#goLeftButton').replaceWith('');
-  $('#goRightButton').replaceWith(' <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>');
+export const goLeft = (engine) => {
+  const player = engine.player.value;   // Grab the player from the engine
+  player.location = 'In front of a home.';
+  story('You head left, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.')
+  µ('#map').replaceWith('');
+  engine.buttons.unshift(newBtn({id: 'enterHomeButton', click: enterHome, val: 0, text: 'Enter Home', engine: engine}));
 };
 
-export const goRight = () => {
-  player.setLocation('In front of a home.');
-  nodeContent('locationUILeveled', player.location);
-  nodeContent('messageUI', 'You head right, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.');
-  $('#map').replaceWith('');
-  $('#goLeftButton').replaceWith('');
-  $('#goRightButton').replaceWith(' <button type="button" onClick="enterHome()" id="enterHomeButton" class="button is-info is-medium">Enter Home</button>');
+export const goRight = (engine) => {
+  const player = engine.player.value; // Grab the player from the engine
+  player.location = 'In front of a home.';
+  story('You head right, down the street. You begin to see some familiar buildings, so trusting your instincts you continue where feels most familiar. It isn\'t long before you find yourself in front of house that feels as if it must be home, even if you have no specific memories of living there.')
+  µ('#map').replaceWith('');
+  engine.buttons.unshift(newBtn({id: 'enterHomeButton', click: enterHome, val: 0, text: 'Enter Home', engine: engine}));
 };
 
-export const enterHome = () => {
-  player.setLocation('Home');
-  nodeContent('messageUI', 'You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
+export const enterHome = (engine) => {
+  const player = engine.player.value; // Grab the player from the engine
+  player.location = 'Home';
+  story('You enter the home, and sit down on the stained and shabby couch. The room begins to spin, and as the wave of adrenalin leaves you, you pass out');
   nodeVisToggle(['enterHomeButton'], 'hidden');
   return clockState = setInterval(healthTimer, 1000);
 };
