@@ -1,5 +1,6 @@
-import {newBtn, newBtns, nodeContent, nodeVisToggle, notify, story} from './gameFunctions.mjs';
-import {µ} from './env.mjs';
+import {newBtn, newBtns, nodeVisToggle, notify, story} from './gameFunctions.mjs';
+import {log} from './env.mjs';
+import {µ} from '@abourass/micro'
 import {createMap, createPlayer, redrawMap, deleteScripts, clearCanvas} from './mapFunctions';
 
 /* ==========================================================================
@@ -18,8 +19,12 @@ export const introClick = (clickValue, engine) => {
   player.incHealth(clickValue); // Increase the player's health
   if (player.health === 2) {
     notify({ title: 'Hey', message: 'You\'re still Alive?'});
+    engine.save();
+    log(`Our current engine is - ${JSON.stringify(engine)}`);
   } else if (player.health === 5) {
     btn.text = 'Cough';
+    engine.save();
+    log(`Our current engine is - ${JSON.stringify(engine)}`);
   } else if (player.health === 6) {
     story('Your throat tightens painfully with each cough.')
   } else if (player.health === 7) {
@@ -36,11 +41,10 @@ export const introClick = (clickValue, engine) => {
     player.awareness = 0;
     player.location = 'a dirty alley';
     engine.buttons.unshift(newBtn({id: 'findingHomeButton', click: findingHomeClick, val: 4, text: 'Look Around', engine: engine}));
-    nodeVisToggle(['map'], 'hidden');
+    // nodeVisToggle(['map'], 'hidden');
     story('You sit up and try to remember what happened.. or to remember anything at all. What happened, Why am I here, who am I?!?');
-    engine.saveGame();
-    createMap(1);
-    return createPlayer(36, 20);
+    // createMap(1);
+    // return createPlayer(36, 20);
   }
 };
 

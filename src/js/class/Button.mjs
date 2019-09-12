@@ -1,5 +1,5 @@
 import {nodeContent} from '../modules/gameFunctions.mjs';
-import {µ} from '../modules/env.mjs';
+import {µ} from '@abourass/micro'
 
 /* ==========================================================================
 //                                Button Class                             //

@@ -1,4 +1,4 @@
-import {µ} from './env.mjs';
+import {µ} from '@abourass/micro'
 
 // Map Script
 export const createMap = (stages) => {

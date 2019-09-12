@@ -1,4 +1,4 @@
-import {µ} from './env.mjs';
+import {µ} from '@abourass/micro'
 import Button from '../class/Button.mjs';
 import iziToast from 'izitoast';
 
