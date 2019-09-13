@@ -16,22 +16,23 @@ import {healthCheck, buttonColor} from './ui';
 const buttonAreaStart = `<div class="content" id="buttonArea">`, divClose = `</div>`; let btnColor;
 
 // 00 - Create a new button with an attached event listener the fires the function you pass
-export const newBtn = ({id: id, click: click, val: val, text: text, engine: engine} = {}) => {
+export const newBtn = ({_id: id, _click: click, _val: val, _text: text, _engine: engine, _clickFnName: clickFnName} = {}) => {
   if (engine.buttons){engine.buttons = []}
-  // First pass the engine (containing our User class) to a health check function, which is passed to the switch below
-  const healthLvl = healthCheck(engine);
-  // so we can get the class for the button (color is dependent on health level)
-  const buttonsAssets = buttonColor(healthLvl);
-  // Now we make the string containing the HTML for our button
-  const btnContainer = `${buttonAreaStart}  <button type="button" id="${id}" class="${buttonsAssets.class}">${text}</button> ${divClose}`;
-  // Replace the current button / button area with the string above
-  µ('#buttonArea').replaceWith(btnContainer);
-  // Bind the value passed, and the engine to be passed to the click function that our event listener will fire
-  const boundClick = click.bind(null, val, engine);
-  // Create our event listener
-  document.getElementById(id).addEventListener("click", boundClick);
-  // Create a new instance of the button class and return it to the engine
-  return Button(id, boundClick, val, text, buttonsAssets.color);
+  const healthLvl = healthCheck(engine); // First pass the engine (containing our User class) to a health check function, which is passed to the switch below
+  const buttonsAssets = buttonColor(healthLvl); // so we can get the class for the button (color is dependent on health level)
+  const btnContainer = `${buttonAreaStart} <button type="button" id="${id}" class="${buttonsAssets.class}">${text}</button> ${divClose}`; // Now we make the string containing the HTML for our button
+  µ('#buttonArea').replaceWith(btnContainer); // Replace the current button / button area with the string above
+  if(clickFnName.length > 0){
+    const clickFn = clickFnName.substr(6, clickFnName.length - 1);
+    const fn = window[clickFn];
+    if (typeof fn === "function"){fn.bind(null, val, engine)}
+    document.getElementById(id).addEventListener("click", fn); // Create our event listener
+    return Button(id, fn, val, text, buttonsAssets.color);   // Create a new instance of the button class and return it to the engine
+  } else {
+    const boundClick = click.bind(null, val, engine); // Bind the value passed, and the engine to be passed to the click function that our event listener will fire
+    document.getElementById(id).addEventListener("click", boundClick); // Create our event listener
+    return Button(id, boundClick, val, text, buttonsAssets.color);   // Create a new instance of the button class and return it to the engine
+  }
 };
 
 // 01 - Create new buttons with attached event listeners

@@ -9,7 +9,7 @@ export const Button = function(id, click, val, text, color) {
     _id: id,
     id(str){if(!str){return this._id} else {this._id = str; return this;}},
     _clickFn: click,
-    clickFn(){return this._clickFn;},
+    clickFn(){return this._clickFn.name;},
     _val: val,
     val(){return this._val;},
     _text: text,
