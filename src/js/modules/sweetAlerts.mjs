@@ -1,5 +1,6 @@
-import {createNewPlayer} from './userFunctions.mjs';
 import Swal from './../../../node_modules/sweetalert2/dist/sweetalert2.min';
+import User from '../class/User';
+import {ui} from './ui.mjs';
 
 /* ==========================================================================
 //                           SweetAlert2 Functions                         //
@@ -14,8 +15,8 @@ export const player = async() => {
     showCancelButton: false,
     confirmButtonText: 'Submit',
     showLoaderOnConfirm: true,
-    preConfirm: async(username) => { const newPlayer = await createNewPlayer(username); return newPlayer; }, // DON'T INLINE these
-    allowOutsideClick: async() => { const newPlayer = await createNewPlayer('The Unnamed One'); return newPlayer; },
+    preConfirm: async(username) => { ui('storySoFar', `The Story So Far For ${username}..`, true, 'bounce'); return User(username); },
+    allowOutsideClick: async() => { ui('storySoFar', `The Story So Far For The Unnamed One..`, true, 'bounce'); return User('The Unnamed One'); },
   });
   return newPlayer;
 };

@@ -1,16 +1,14 @@
 import {player} from './modules/sweetAlerts.mjs';
-import {newBtn} from './modules/gameFunctions.mjs';
+import {newBtn} from './modules/buttonFunctions.mjs';
 import {introClick} from './modules/clickFunctions.mjs';
 import {createModal} from './modules/modalFunctions';
 import fs from 'fs';
-import {extend} from './modules/extend';
 const statHTML = fs.readFileSync('./src/modals/stats.html', 'utf-8'); // Moving this until I'm ready to create the statModal
 const statModal = createModal.bind(null, {id: 'testModal', name: 'Test Modal', modalClass: '', html: statHTML, btn: `<button type="button" class="button" id="openModal">Open Modal</button>`, btnId: 'openModal' });
 
 /* ==========================================================================
 //                                 Game Engine                             //
 ===========================================================================*/
-
 // The game engine is an object invoked via this function
 const gameEngine = async function(){
   try {
@@ -21,10 +19,7 @@ const gameEngine = async function(){
       return this;
     },
     save() {
-      const protoEngine = {};
-      protoEngine.player = Object.assign({ __proto__: this.player.value.__proto__ }, this.player.value.__proto__);
-      console.log(`protoEngine is -------- ${JSON.stringify(protoEngine)}`);
-      // window.localStorage.setItem('engine', JSON.stringify(protoEngine));
+      window.localStorage.setItem('engine', JSON.stringify(this));
       return this;
     },
     load() {
@@ -37,14 +32,6 @@ const gameEngine = async function(){
     deleteSave() {
       window.localStorage.removeItem('engine');
       return this;
-    },
-    toJSON: function() {
-      const tmp = {};
-      for(const key in this) {
-        if(typeof this[key] !== 'function')
-          tmp[key] = this[key];
-      }
-      return tmp;
     }
   };
   if (window.localStorage.getItem('engine') != null){ engine.load(); }
