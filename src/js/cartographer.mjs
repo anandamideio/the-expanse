@@ -13,7 +13,7 @@ const cell = { // .................>-The walls are represented in the order: [to
   NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1], // /___________________<-DeadEnds-<
   NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0], // /__<-Corridors, Block, & Empty-<
 };
-const editTemplate = [
+const editPalette = [
   ['Nxxx','xExx','xxSx','xxxW'],
   ['NExx','NxxW','xESx','xxSW'],
   ['NESx','NExW','NxSW','xESW'],
@@ -34,149 +34,150 @@ const
   borderWidth = 20,
   borderOffset = 10,
   portSize = mapSize + borderWidth,
-  cellWidth = mapSize/mapTemplate.length,
-  position = { x:0, y:0 };
+  cellWidth = mapSize/mapTemplate.length;
 
-const createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow, edit) {
-  const
-    dragContent = document.createTextNode(`${mapTemplate[yLocation][xLocation]} - °`),
-    dragTile = document.createElement("div");
-  dragTile.appendChild(dragContent);
-  if (edit) {
-    dragTile.setAttribute("class", "mapTile dragEdit")
-  } else {dragTile.setAttribute("class", "mapTile draggable");}
-  if (edit) { dragTile.setAttribute("data-walls", editTemplate[yLocation][xLocation]) }
-  dragTile.setAttribute("data-x", `${xLocation}`);
-  dragTile.setAttribute("data-y", `${yLocation}`);
-  dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
-  dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-  parentPort.append(dragTile);
-};
+const
+  // ///////////////////
+  // Drawing Functions
+  //
+  createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
+    const
+      dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`),
+      dropTile = document.createElement("div");
+    dropTile.appendChild(dropContent);
+    dropTile.setAttribute("class", "mapTile dropzone");
+    dropTile.setAttribute("data-x", `${xLocation}`);
+    dropTile.setAttribute("data-y", `${yLocation}`);
+    dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
+    dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
+    parentPort.append(dropTile);
+  },
 
-const createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
-  const
-    dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`),
-    dropTile = document.createElement("div");
-  dropTile.appendChild(dropContent);
-  dropTile.setAttribute("class", "mapTile dropzone");
-  dropTile.setAttribute("data-x", `${xLocation}`);
-  dropTile.setAttribute("data-y", `${yLocation}`);
-  dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
-  dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-  parentPort.append(dropTile);
-};
-const drawCell = function(yLocation, xLocation, tile) {
-  const
-    xCoordinateLow = borderWidth + (cellWidth * xLocation),
-    xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth,
-    yCoordinateLow = borderWidth + (cellWidth * yLocation),
-    yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth;
-  const lines = [
-    {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< --------- <-top-<
-    {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------ <-right-<
-    {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ---- <-bottom-<
-    {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
-  ];
+  createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow, edit) {
+    const
+      dragContent = document.createTextNode(`${mapTemplate[yLocation][xLocation]} - °`),
+      dragTile = document.createElement("div");
+    dragTile.appendChild(dragContent);
+    if (edit) {
+      dragTile.setAttribute("class", "mapTile dragEdit");
+      dragTile.setAttribute("data-walls", editPalette[yLocation][xLocation])
+    } else {
+      dragTile.setAttribute("class", "mapTile draggable");
+    }
+    dragTile.setAttribute("data-x", `${xLocation}`);
+    dragTile.setAttribute("data-y", `${yLocation}`);
+    dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
+    dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
+    parentPort.append(dragTile);
+  },
 
-  createDrop(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
-  createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
+  drawCell = function(yLocation, xLocation, tile) {
+    const
+      xCoordinateLow = borderWidth + (cellWidth * xLocation),
+      xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth,
+      yCoordinateLow = borderWidth + (cellWidth * yLocation),
+      yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth;
+    const lines = [
+      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< --------- <-top-<
+      {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------ <-right-<
+      {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ---- <-bottom-<
+      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
+    ];
 
-  const tileDef = cell[`${tile}`];
-  tileDef.forEach((wall, index) => {
-    wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
-  })
-};
+    createDrop(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
+    createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
 
-const drawEditCell = function(yLocation, xLocation, tile) {
-  const
-    editBorderOffset = portSize+(3*borderOffset),
-    editCellWidth = cellWidth+20;
-  const
-    xCoordinateLow = borderWidth + (cellWidth * xLocation) + (portSize+(2*borderOffset)) + (borderWidth*xLocation),
-    yCoordinateLow = borderWidth + (cellWidth * yLocation) + (borderWidth*yLocation),
-    xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth + (portSize+(2*borderOffset)) + (borderWidth*xLocation),
-    yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth + (borderWidth*yLocation);
-  const lines = [
-    {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< --------- <-top-<
-    {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------ <-right-<
-    {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ---- <-bottom-<
-    {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
-  ];
-  createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow, 'edit');
-  canvas.rectangle((yLocation * editCellWidth)+editBorderOffset, (xLocation * editCellWidth)+borderOffset, editCellWidth, editCellWidth);
-  cell[`${tile}`].forEach((wall, index) => {
-    wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
-  })
-};
+    const tileDef = cell[`${tile}`];
+    tileDef.forEach((wall, index) => {
+      wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
+    })
+  },
 
-const drawEditBay = function(){
-  editTemplate.forEach((row, yIter) => {
-      row.forEach((cell, xIter) => {
-        drawEditCell(yIter, xIter, cell)
-      })
-    });
-};
-
-const drawMap = function(templateArray) {
+  drawMap = function(templateArray) {
     canvas.rectangle(borderOffset, borderOffset, portSize, portSize); //<-< -------------------------------------- <-A simple border-<
     templateArray.forEach((row, yIter) => {
       row.forEach((cell, xIter) => {
         drawCell(yIter, xIter, cell);
       })
     });
-};
-const redrawMap = function() {
+  },
+
+  drawPaletteCell = function(yLocation, xLocation, tile) {
+    const
+      editBorderOffset = portSize+(3*borderOffset),
+      editCellWidth = cellWidth+20;
+    const
+      xCoordinateLow = borderWidth + (cellWidth * xLocation) + (portSize+(2*borderOffset)) + (borderWidth*xLocation),
+      yCoordinateLow = borderWidth + (cellWidth * yLocation) + (borderWidth*yLocation),
+      xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth + (portSize+(2*borderOffset)) + (borderWidth*xLocation),
+      yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth + (borderWidth*yLocation);
+    const lines = [
+      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< --------- <-top-<
+      {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------ <-right-<
+      {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ---- <-bottom-<
+      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
+    ];
+    createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow, 'edit');
+    canvas.rectangle((yLocation * editCellWidth)+editBorderOffset, (xLocation * editCellWidth)+borderOffset, editCellWidth, editCellWidth);
+    cell[`${tile}`].forEach((wall, index) => {
+      wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
+    })
+  },
+
+  drawPalette = function(){
+    editPalette.forEach((row, yIter) => {
+      row.forEach((cell, xIter) => {
+        drawPaletteCell(yIter, xIter, cell)
+      })
+    });
+  },
+
+  deleteChildren = function(parent) {
+    let child = parent.lastElementChild;
+    while(child){
+      parent.removeChild(child);
+      child = parent.lastElementChild;
+    }
+  },
+
+  redrawMap = function() {
     deleteChildren(mapDisplay);
     context.clearRect(5, 5, 1200, 1200);
     drawMap(mapTemplate);
-    drawEditBay();
-};
+    drawPalette();
+  };
 
-drawMap(mapTemplate);
-drawEditBay();
-//window.setInterval(redrawMap, 1000/5);
-const deleteChildren = function(parent) {
-  let child = parent.lastElementChild;
-  while(child){
-    parent.removeChild(child);
-    child = parent.lastElementChild;
-  }
-};
+let grabbedTile, walls, oldX, oldY, newX, newY;
 
-let grabbedTile, targetZone, walls, oldX, oldY, newX, newY;
-
-const grabCell = function(event){
-  walls = event.target.dataset.walls;
-  oldX = event.target.dataset.x;
-  oldY = event.target.dataset.y;
-  if (event.target.dataset.walls){ grabbedTile = editTemplate[oldY][oldX] }
-  else {grabbedTile = mapTemplate[oldY][oldX];}
-};
+const
+  // ///////////////////////// //
+  // Drag & Drop Functionality //
+  //
+  grabCell = function(event){
+    walls = event.target.dataset.walls;
+    oldX = event.target.dataset.x;
+    oldY = event.target.dataset.y;
+    if (event.target.dataset.walls){ grabbedTile = editPalette[oldY][oldX] }
+    else {grabbedTile = mapTemplate[oldY][oldX];}
+  },
+  swapCells = function(dropZoneTile) {
+    newX = dropZoneTile.dataset.x;
+    newY = dropZoneTile.dataset.y;
+    mapTemplate[newY][newX] = grabbedTile;
+    grabbedTile = undefined;
+    redrawMap();
+  };
 
 interact('.draggable').draggable({
-  listeners: {
-    start (event) { console.log(event); grabCell(event) },
-    move (event) {//position.x += event.dx; //position.y += event.dy; //event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    },
-  }
+  listeners: { start (event) { grabCell(event) } }
 });
 interact('.dragEdit').draggable({
-  listeners: {
-    start (event) { console.log(event.target); grabCell(event) },
-    move (event) {//position.x += event.dx; //position.y += event.dy; //event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    },
-  }
+  listeners: { start (event) { grabCell(event) } }
 });
-
-const swapCells = function(dropZoneTile) {
-  newX = dropZoneTile.dataset.x;
-  newY = dropZoneTile.dataset.y;
-  targetZone = mapTemplate[newY][newX];
-  mapTemplate[newY][newX] = grabbedTile;
-  mapTemplate[oldY][oldX] = targetZone;
-  redrawMap();
-};
-
 interact('.dropzone')
-  .dropzone({ ondrop: e => swapCells(e.target) })
-  .on('dropactivate', e => e.target.classList.add('drop-activated'));
+  .dropzone({ ondrop: e => swapCells(e.target) });
+
+
+drawMap(mapTemplate);
+drawPalette();
+//window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
