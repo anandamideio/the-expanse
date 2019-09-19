@@ -6,9 +6,15 @@
   <link rel="stylesheet" href="css/cartoStyle.css">
 </head>
 <body>
-<canvas id="mapPort" width="1200" height="1200"></canvas>
-<div id="mapDisplay"></div>
-
+<div>
+  <canvas id="mapPort" width="1200" height="650"></canvas>
+  <div id="mapDisplay"></div>
+</div>
+<div class="field" id="mapControls">
+  <div class="control">
+    <input class="input" type="text" id="sizeControl" placeholder="Map Size"><label for="sizeControl" hidden></label>
+  </div>
+</div>
 </body>
 <script src="../node_modules/roughjs/dist/rough-async.js"></script>
 <script type="module" src="./js/cartographer.mjs"></script>
