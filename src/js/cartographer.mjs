@@ -1,6 +1,5 @@
 import interact from 'interactjs';
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
-// import {clearCanvas} from './modules/mapFunctions';
 const
   mapDisplay = document.getElementById('mapDisplay'),
   canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' }),
@@ -29,6 +28,23 @@ let mapTemplate = [
   ['NxSx','xxxx','xExW','xxxx','NESW','xxxx','xxxx','xxxx'],
   ['xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx'], //
 ];
+
+const
+  sizeControl = document.getElementById('sizeControl'),
+  sizeValue = sizeControl.value || 6;
+
+const
+  defineGrid = function(size) {
+    const lineTemplate = [];
+    lineTemplate.length = size;
+    mapTemplate.length = size;
+    lineTemplate.fill('xxxx');
+    mapTemplate.fill(lineTemplate);
+    drawMap(mapTemplate)
+  };
+
+sizeControl.addEventListener('change', ()=>console.log(sizeValue));
+
 const
   mapSize = 600,
   borderWidth = 20,
@@ -36,10 +52,10 @@ const
   portSize = mapSize + borderWidth,
   cellWidth = mapSize/mapTemplate.length;
 
-const
   // ///////////////////
   // Drawing Functions
   //
+const
   createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
     const
       dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`),
@@ -87,8 +103,7 @@ const
     createDrop(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
     createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
 
-    const tileDef = cell[`${tile}`];
-    tileDef.forEach((wall, index) => {
+    cell[`${tile}`].forEach((wall, index) => {
       wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
     })
   },
@@ -147,19 +162,20 @@ const
     drawPalette();
   };
 
-let grabbedTile, walls, oldX, oldY, newX, newY;
 
-const
   // ///////////////////////// //
   // Drag & Drop Functionality //
   //
-  grabCell = function(event){
-    walls = event.target.dataset.walls;
-    oldX = event.target.dataset.x;
-    oldY = event.target.dataset.y;
-    if (event.target.dataset.walls){ grabbedTile = editPalette[oldY][oldX] }
+let grabbedTile, walls, oldX, oldY, newX, newY;
+const
+  grabCell = function(grabbed){
+    walls = grabbed.dataset.walls;
+    oldX = grabbed.dataset.x;
+    oldY = grabbed.dataset.y;
+    if (grabbed.dataset.walls){ grabbedTile = editPalette[oldY][oldX] }
     else {grabbedTile = mapTemplate[oldY][oldX];}
   },
+
   swapCells = function(dropZoneTile) {
     newX = dropZoneTile.dataset.x;
     newY = dropZoneTile.dataset.y;
@@ -169,15 +185,16 @@ const
   };
 
 interact('.draggable').draggable({
-  listeners: { start (event) { grabCell(event) } }
+  listeners: { start (e) { grabCell(e.target); console.log(sizeControl) } }
 });
 interact('.dragEdit').draggable({
-  listeners: { start (event) { grabCell(event) } }
+  listeners: { start (e) { grabCell(e.target) } }
 });
 interact('.dropzone')
-  .dropzone({ ondrop: e => swapCells(e.target) });
+  .dropzone({ ondrop: e => swapCells(e.target) })
+  .on('dropactivate', e => e.target.classList.add('drop-activated'));
 
 
-drawMap(mapTemplate);
 drawPalette();
+drawMap(mapTemplate);
 //window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
