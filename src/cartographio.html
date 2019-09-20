@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rough Cartography</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
   <link rel="stylesheet" href="css/cartoStyle.css">
 </head>
 <body>
@@ -10,9 +12,18 @@
   <canvas id="mapPort" width="1200" height="650"></canvas>
   <div id="mapDisplay"></div>
 </div>
-<div class="field" id="mapControls">
-  <div class="control">
-    <input class="input" type="text" id="sizeControl" placeholder="Map Size"><label for="sizeControl" hidden></label>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <div class="field has-addons" id="mapControls">
+        <p class="control">
+          <input class="input" type="text" id="sizeControl" placeholder="Map Size"><label for="sizeControl" hidden></label>
+        </p>
+        <p class="control">
+          <button class="button is-dark" type="submit" id="submitSize">Resize</button><label for="submitSize" hidden></label>
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 </body>

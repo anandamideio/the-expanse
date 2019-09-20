@@ -30,20 +30,23 @@ let mapTemplate = [
 ];
 
 const
-  sizeControl = document.getElementById('sizeControl'),
-  sizeValue = sizeControl.value || 6;
+  zmapTemplate = [],
+  sizeControl = document.getElementById('submitSize'),
+  sizeInput = document.getElementById('sizeControl');
+let sizeValue = parseInt(sizeInput.value) || 6;
 
 const
-  defineGrid = function(size) {
+  defineGrid = function() {
     const lineTemplate = [];
-    lineTemplate.length = size;
-    mapTemplate.length = size;
+    lineTemplate.length = sizeValue;
+    mapTemplate.length = sizeValue;
     lineTemplate.fill('xxxx');
     mapTemplate.fill(lineTemplate);
-    drawMap(mapTemplate)
+    redrawMap(mapTemplate);
+    console.log(mapTemplate);
   };
 
-sizeControl.addEventListener('change', ()=>console.log(sizeValue));
+sizeControl.addEventListener('click', defineGrid);
 
 const
   mapSize = 600,
@@ -76,9 +79,10 @@ const
     dragTile.appendChild(dragContent);
     if (edit) {
       dragTile.setAttribute("class", "mapTile dragEdit");
-      dragTile.setAttribute("data-walls", editPalette[yLocation][xLocation])
+      dragTile.setAttribute("data-origin", "fromPalette");
     } else {
       dragTile.setAttribute("class", "mapTile draggable");
+      dragTile.setAttribute("data-origin", "fromMap");
     }
     dragTile.setAttribute("data-x", `${xLocation}`);
     dragTile.setAttribute("data-y", `${yLocation}`);
@@ -158,43 +162,41 @@ const
   redrawMap = function() {
     deleteChildren(mapDisplay);
     context.clearRect(5, 5, 1200, 1200);
-    drawMap(mapTemplate);
     drawPalette();
+    drawMap(mapTemplate);
   };
-
 
   // ///////////////////////// //
   // Drag & Drop Functionality //
   //
-let grabbedTile, walls, oldX, oldY, newX, newY;
+let grabbedTile, origin, oldX, oldY, newX, newY;
 const
   grabCell = function(grabbed){
-    walls = grabbed.dataset.walls;
+    origin = grabbed.dataset.origin;
     oldX = grabbed.dataset.x;
     oldY = grabbed.dataset.y;
-    if (grabbed.dataset.walls){ grabbedTile = editPalette[oldY][oldX] }
-    else {grabbedTile = mapTemplate[oldY][oldX];}
+    console.log(origin);
+    if (origin === 'fromPalette'){ grabbedTile = editPalette[oldY][oldX] }
+    else if (origin === 'fromMap') {grabbedTile = mapTemplate[oldY][oldX];}
   },
 
   swapCells = function(dropZoneTile) {
     newX = dropZoneTile.dataset.x;
     newY = dropZoneTile.dataset.y;
+    if ( origin === 'fromMap'){ mapTemplate[oldY][oldX] = mapTemplate[newY][newX] }
     mapTemplate[newY][newX] = grabbedTile;
     grabbedTile = undefined;
     redrawMap();
   };
 
 interact('.draggable').draggable({
-  listeners: { start (e) { grabCell(e.target); console.log(sizeControl) } }
+  listeners: { start (e) { grabCell(e.target); } }
 });
 interact('.dragEdit').draggable({
   listeners: { start (e) { grabCell(e.target) } }
 });
 interact('.dropzone')
-  .dropzone({ ondrop: e => swapCells(e.target) })
-  .on('dropactivate', e => e.target.classList.add('drop-activated'));
+  .dropzone({ ondrop: e => swapCells(e.target) });
 
-
-drawPalette();
-drawMap(mapTemplate);
+redrawMap();
 //window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<

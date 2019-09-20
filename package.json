@@ -22,7 +22,7 @@
     "@babel/runtime": "^7.6.0",
     "@sweetalert2/theme-dark": "^2.1.0",
     "animate.css": "^3.7.2",
-    "bulma": "^0.7.5",
+    "bulma": "0.7.5",
     "eslint-plugin-import": "^2.18.2",
     "fs": "0.0.1-security",
     "interactjs": "^1.6.2",
