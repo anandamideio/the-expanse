@@ -202,7 +202,10 @@ const
   save = function() {
     mapSaveObj.name = document.getElementById('mapSaveName').value;
     mapSaveObj.layout = mapTemplate;
-    localStorage.setItem(`${mapSaveObj.name}`, JSON.stringify(mapSaveObj));
+    localStorage.setItem('savedMaps', JSON.stringify(mapSaveObj));
+  },
+  load = function() {
+    localStorage.getItem()
   };
   // ///////////////////// //
   // Save & Load Listeners
