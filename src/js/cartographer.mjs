@@ -18,31 +18,26 @@ const editPalette = [
   ['NESx','NExW','NxSW','xESW'],
   ['NESW','NxSx','xExW','xxxx'],
 ];
-let mapTemplate = [
-  ['xxxx','Nxxx','xxxx','xExx','xxxx','xxSx','xxxx','xxxW'], // ///////////////////////////
-  ['xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx'], // This is where you can play with the map
-  ['NExx','xxxx','NxxW','xxxx','xESx','xxxx','xxSW','xxxx'], // You define a square array of cell
-  ['xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx'], // definitions
-  ['xxxx','NESx','xxxx','NExW','xxxx','NxSW','xxxx','xESW'], //
-  ['xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx'],
-  ['NxSx','xxxx','xExW','xxxx','NESW','xxxx','xxxx','xxxx'],
-  ['xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx','xxxx'], //
-];
 
 const
-  zmapTemplate = [],
   sizeControl = document.getElementById('submitSize'),
-  sizeInput = document.getElementById('sizeControl');
-let sizeValue = parseInt(sizeInput.value, 10);
-
+  sizeInput = document.getElementById('sizeControl'),
+  mapPort = document.getElementById('mapPort');
+let emptyTemplate = [], mapTemplate;
 const
   defineGrid = function() {
-    const lineTemplate = [];
+    let lineTemplate = [];
     console.log(parseInt(sizeInput.value, 10));
-    lineTemplate.length = parseInt(sizeInput.value, 10);
-    mapTemplate.length = parseInt(sizeInput.value, 10);
+    lineTemplate.length = parseInt(sizeInput.value, 10) || 8;
     lineTemplate.fill('xxxx');
-    mapTemplate.fill(lineTemplate);
+    let mapHeight = 0;
+    while (mapHeight < lineTemplate.length) {
+      const line = [...lineTemplate];
+      emptyTemplate.push(line);
+      mapHeight += 1;
+    }
+    mapTemplate = emptyTemplate;
+    emptyTemplate = [];
     redrawMap(mapTemplate);
   };
 
@@ -52,11 +47,11 @@ const
   mapSize = 600,
   borderWidth = 20,
   borderOffset = 10,
-  portSize = mapSize + borderWidth,
-  cellWidth = mapSize/mapTemplate.length;
+  portSize = mapSize + borderWidth;
+let cellWidth;
 
-  // ///////////////////
-  // Drawing Functions
+  // ///////////////////// //
+  // Tile <div> Generators
   //
 const
   createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
@@ -89,8 +84,11 @@ const
     dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
     parentPort.append(dragTile);
-  },
-
+  };
+  // ///////////////////
+  // Drawing Functions
+  //
+const
   drawCell = function(yLocation, xLocation, tile) {
     const
       xCoordinateLow = borderWidth + (cellWidth * xLocation),
@@ -159,11 +157,12 @@ const
     }
   },
 
-  redrawMap = function() {
+  redrawMap = function(template) {
     deleteChildren(mapDisplay);
     context.clearRect(5, 5, 1200, 1200);
+    cellWidth = mapSize/template.length;
     drawPalette();
-    drawMap(mapTemplate);
+    drawMap(template);
   };
 
   // ///////////////////////// //
@@ -186,7 +185,7 @@ const
     if ( origin === 'fromMap'){ mapTemplate[oldY][oldX] = mapTemplate[newY][newX] }
     mapTemplate[newY][newX] = grabbedTile;
     grabbedTile = undefined;
-    redrawMap();
+    redrawMap(mapTemplate);
   };
 
 interact('.draggable').draggable({
@@ -198,5 +197,5 @@ interact('.dragEdit').draggable({
 interact('.dropzone')
   .dropzone({ ondrop: e => swapCells(e.target) });
 
-redrawMap();
+defineGrid();
 //window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
