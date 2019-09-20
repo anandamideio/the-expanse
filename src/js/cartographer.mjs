@@ -33,17 +33,17 @@ const
   zmapTemplate = [],
   sizeControl = document.getElementById('submitSize'),
   sizeInput = document.getElementById('sizeControl');
-let sizeValue = parseInt(sizeInput.value) || 6;
+let sizeValue = parseInt(sizeInput.value, 10);
 
 const
   defineGrid = function() {
     const lineTemplate = [];
-    lineTemplate.length = sizeValue;
-    mapTemplate.length = sizeValue;
+    console.log(parseInt(sizeInput.value, 10));
+    lineTemplate.length = parseInt(sizeInput.value, 10);
+    mapTemplate.length = parseInt(sizeInput.value, 10);
     lineTemplate.fill('xxxx');
     mapTemplate.fill(lineTemplate);
     redrawMap(mapTemplate);
-    console.log(mapTemplate);
   };
 
 sizeControl.addEventListener('click', defineGrid);
