@@ -1,11 +1,12 @@
 import interact from 'interactjs';
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
 const
+  submitSize = document.getElementById('submitSize'),
+  submitSave = document.getElementById('submitSave'),
   mapDisplay = document.getElementById('mapDisplay'),
   canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' }),
   smoothCanvas = document.getElementById('mapPort'),
-  context = smoothCanvas.getContext('2d'),
-  parentPort = document.getElementById('mapDisplay');
+  context = smoothCanvas.getContext('2d');
 const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
   Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1], // /_______________<-Single walls-<
   NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1], // /____________________<-Corners-<
@@ -20,36 +21,11 @@ const editPalette = [
 ];
 
 const
-  sizeControl = document.getElementById('submitSize'),
-  sizeInput = document.getElementById('sizeControl'),
-  mapPort = document.getElementById('mapPort');
-let emptyTemplate = [], mapTemplate;
-const
-  defineGrid = function() {
-    let lineTemplate = [];
-    console.log(parseInt(sizeInput.value, 10));
-    lineTemplate.length = parseInt(sizeInput.value, 10) || 8;
-    lineTemplate.fill('xxxx');
-    let mapHeight = 0;
-    while (mapHeight < lineTemplate.length) {
-      const line = [...lineTemplate];
-      emptyTemplate.push(line);
-      mapHeight += 1;
-    }
-    mapTemplate = emptyTemplate;
-    emptyTemplate = [];
-    redrawMap(mapTemplate);
-  };
-
-sizeControl.addEventListener('click', defineGrid);
-
-const
   mapSize = 600,
   borderWidth = 20,
   borderOffset = 10,
   portSize = mapSize + borderWidth;
-let cellWidth;
-
+let cellWidth, mapTemplate;
   // ///////////////////// //
   // Tile <div> Generators
   //
@@ -64,7 +40,7 @@ const
     dropTile.setAttribute("data-y", `${yLocation}`);
     dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
     dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-    parentPort.append(dropTile);
+    mapDisplay.append(dropTile);
   },
 
   createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow, edit) {
@@ -83,9 +59,9 @@ const
     dragTile.setAttribute("data-y", `${yLocation}`);
     dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-    parentPort.append(dragTile);
+    mapDisplay.append(dragTile);
   };
-  // ///////////////////
+  // ///////////////// //
   // Drawing Functions
   //
 const
@@ -111,7 +87,7 @@ const
   },
 
   drawMap = function(templateArray) {
-    canvas.rectangle(borderOffset, borderOffset, portSize, portSize); //<-< -------------------------------------- <-A simple border-<
+    canvas.rectangle(borderOffset, borderOffset, portSize, portSize); // <-< -------------- <-A simple border-<
     templateArray.forEach((row, yIter) => {
       row.forEach((cell, xIter) => {
         drawCell(yIter, xIter, cell);
@@ -163,10 +139,30 @@ const
     cellWidth = mapSize/template.length;
     drawPalette();
     drawMap(template);
-  };
+  },
 
-  // ///////////////////////// //
-  // Drag & Drop Functionality //
+  defineGrid = function() {
+    const
+      lineTemplate = [],
+      sizeInput = document.getElementById('sizeControl');
+    lineTemplate.length = parseInt(sizeInput.value, 10) || 8;
+    lineTemplate.fill('NESW');
+    let emptyTemplate = [], mapHeight = 0;
+    while (mapHeight < lineTemplate.length) {
+      const line = [...lineTemplate];
+      emptyTemplate.push(line);
+      mapHeight += 1;
+    }
+    mapTemplate = emptyTemplate;
+    redrawMap(mapTemplate);
+  };
+  // ///////////// //
+  // Draw Listener
+submitSize.addEventListener('click', defineGrid);
+
+
+  // ///////////////////// //
+  // Drag & Drop Functions
   //
 let grabbedTile, origin, oldX, oldY, newX, newY;
 const
@@ -187,7 +183,8 @@ const
     grabbedTile = undefined;
     redrawMap(mapTemplate);
   };
-
+  // ///////////////////// //
+  // Drag & Drop Listeners
 interact('.draggable').draggable({
   listeners: { start (e) { grabCell(e.target); } }
 });
@@ -196,6 +193,20 @@ interact('.dragEdit').draggable({
 });
 interact('.dropzone')
   .dropzone({ ondrop: e => swapCells(e.target) });
+
+  // /////////// //
+  // Save & Load
+  //
+let mapSaveObj = {};
+const
+  save = function() {
+    mapSaveObj.name = document.getElementById('mapSaveName').value;
+    mapSaveObj.layout = mapTemplate;
+    localStorage.setItem(`${mapSaveObj.name}`, JSON.stringify(mapSaveObj));
+  };
+  // ///////////////////// //
+  // Save & Load Listeners
+submitSave.addEventListener('click', save);
 
 defineGrid();
 //window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
