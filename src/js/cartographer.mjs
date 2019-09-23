@@ -1,5 +1,7 @@
-import interact from 'interactjs';
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
+import interact from 'interactjs';
+import FileSaver from 'file-saver';
+
 const
   submitSize = document.getElementById('submitSize'),
   submitSave = document.getElementById('submitSave'),
@@ -26,9 +28,9 @@ const
   borderOffset = 10,
   portSize = mapSize + borderWidth;
 let cellWidth, mapTemplate;
-  // ///////////////////// //
-  // Tile <div> Generators
-  //
+// ///////////////////// //
+// Tile <div> Generators
+//
 const
   createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
     const
@@ -61,9 +63,9 @@ const
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
     mapDisplay.append(dragTile);
   };
-  // ///////////////// //
-  // Drawing Functions
-  //
+// ///////////////// //
+// Drawing Functions
+//
 const
   drawCell = function(yLocation, xLocation, tile) {
     const
@@ -156,14 +158,14 @@ const
     mapTemplate = emptyTemplate;
     redrawMap(mapTemplate);
   };
-  // ///////////// //
-  // Draw Listener
+// ///////////// //
+// Draw Listener
 submitSize.addEventListener('click', defineGrid);
 
 
-  // ///////////////////// //
-  // Drag & Drop Functions
-  //
+// ///////////////////// //
+// Drag & Drop Functions
+//
 let grabbedTile, origin, oldX, oldY, newX, newY;
 const
   grabCell = function(grabbed){
@@ -171,8 +173,8 @@ const
     oldX = grabbed.dataset.x;
     oldY = grabbed.dataset.y;
     console.log(origin);
-    if (origin === 'fromPalette'){ grabbedTile = editPalette[oldY][oldX] }
-    else if (origin === 'fromMap') {grabbedTile = mapTemplate[oldY][oldX];}
+    if (origin === 'fromPalette') { grabbedTile = editPalette[oldY][oldX] }
+    else if (origin === 'fromMap') { grabbedTile = mapTemplate[oldY][oldX] }
   },
 
   swapCells = function(dropZoneTile) {
@@ -183,8 +185,8 @@ const
     grabbedTile = undefined;
     redrawMap(mapTemplate);
   };
-  // ///////////////////// //
-  // Drag & Drop Listeners
+// ///////////////////// //
+// Drag & Drop Listeners
 interact('.draggable').draggable({
   listeners: { start (e) { grabCell(e.target); } }
 });
@@ -197,15 +199,17 @@ interact('.dropzone')
   // /////////// //
   // Save & Load
   //
-let mapSaveObj = {};
 const
   save = function() {
-    mapSaveObj.name = document.getElementById('mapSaveName').value;
-    mapSaveObj.layout = mapTemplate;
-    localStorage.setItem('savedMaps', JSON.stringify(mapSaveObj));
+    const mapSaveObj = {
+      name: document.getElementById('mapSaveName').value,
+      layout: mapTemplate,
+    };
+    const blobbedMap = new Blob([JSON.stringify(mapSaveObj)], {type: 'application/json;charset=utf-8'});
+    FileSaver.saveAs(blobbedMap, `mapSave-${mapSaveObj.name}.JSON`);
   },
+
   load = function() {
-    localStorage.getItem()
   };
   // ///////////////////// //
   // Save & Load Listeners
