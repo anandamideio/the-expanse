@@ -215,6 +215,10 @@ const
   },
 
   handleDrop = function(e) {
+    const [...file] = e.dataTransfer.files;
+    if (file.length > 1) return console.error('Choose exactly one file to load');
+    const mapReader = new FileReader();
+    console.log();
   },
 
   toggleLoadPortal = function() { loadPortal.classList.toggle('is-active'); },
