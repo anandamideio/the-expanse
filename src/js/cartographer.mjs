@@ -4,7 +4,6 @@ import FileSaver from 'file-saver';
 
 const
   submitSize = document.getElementById('submitSize'),
-  submitSave = document.getElementById('submitSave'),
   mapDisplay = document.getElementById('mapDisplay'),
   canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' }),
   smoothCanvas = document.getElementById('mapPort'),
@@ -200,6 +199,10 @@ interact('.dropzone')
   // Save & Load
   //
 const
+  submitSave = document.getElementById('submitSave'),
+  loadButton = document.getElementById('loadButton'),
+  loadPortal = document.getElementById('loadPortal');
+const
   save = function() {
     const mapSaveObj = {
       name: document.getElementById('mapSaveName').value,
@@ -209,11 +212,16 @@ const
     FileSaver.saveAs(blobbedMap, `mapSave-${mapSaveObj.name}.JSON`);
   },
 
+  activateLoadPortal = function() {
+    loadPortal.classList.toggle('is-active');
+  },
+
   load = function() {
   };
   // ///////////////////// //
   // Save & Load Listeners
 submitSave.addEventListener('click', save);
+loadButton.addEventListener('click', activateLoadPortal);
 
 defineGrid();
 //window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
