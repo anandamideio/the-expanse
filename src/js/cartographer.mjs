@@ -201,7 +201,9 @@ interact('.dropzone')
 const
   submitSave = document.getElementById('submitSave'),
   loadButton = document.getElementById('loadButton'),
-  loadPortal = document.getElementById('loadPortal');
+  loadPortal = document.getElementById('loadPortal'),
+  closeModal = document.getElementById('closeModal'),
+  loadDropIn = document.getElementById('loadDropIn');
 const
   save = function() {
     const mapSaveObj = {
@@ -212,16 +214,25 @@ const
     FileSaver.saveAs(blobbedMap, `mapSave-${mapSaveObj.name}.JSON`);
   },
 
-  activateLoadPortal = function() {
-    loadPortal.classList.toggle('is-active');
+  handleDrop = function(e) {
   },
 
-  load = function() {
-  };
+  toggleLoadPortal = function() { loadPortal.classList.toggle('is-active'); },
+  lightsOn = function() { loadPortal.classList.add('highlight') },
+  lightOff = function() { loadPortal.classList.remove('highlight') },
+  preventDefaults = function(e) { e.preventDefault(); e.stopPropagation(); };
+
   // ///////////////////// //
   // Save & Load Listeners
 submitSave.addEventListener('click', save);
-loadButton.addEventListener('click', activateLoadPortal);
 
+[loadButton, closeModal].forEach(button => button.addEventListener('click', toggleLoadPortal));
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => loadDropIn.addEventListener(e, preventDefaults, false));
+['dragenter', 'dragover'].forEach(e => loadDropIn.addEventListener(e, lightsOn, false));
+['dragleave', 'drop'].forEach(e => loadDropIn.addEventListener(e, lightOff, false));
+
+loadDropIn.addEventListener('drop', handleDrop, false);
+  // ////////// //
+  // Initialize
 defineGrid();
-//window.setInterval(redrawMap, 1000/5); // <<=This is just for fun=<<
