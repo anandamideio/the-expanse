@@ -59,8 +59,7 @@ export const newBtns = (arrayOfBtn, engine) => {
   } catch (e) { console.error(e); }
 };
 
-// 02 - Toggle the content of a node on the DOM tree, and animate the change if you want
-// 04 - Toggle a Class
+// 02 - Toggle a Class
 export const nodeVisToggle = (toggleNode, className) => {
   if (Array.isArray(toggleNode)) { // if passed an array of things to toggle visibility of, toggle all
     for (let step = 0; step < toggleNode.length; step++) {
