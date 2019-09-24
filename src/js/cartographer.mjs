@@ -27,9 +27,9 @@ const
   borderOffset = 10,
   portSize = mapSize + borderWidth;
 let cellWidth, mapTemplate;
-// ///////////////////// //
-// Tile <div> Generators
-//
+  // ///////////////////// //
+  // Tile <div> Generators
+  //
 const
   createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
     const
@@ -62,9 +62,9 @@ const
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
     mapDisplay.append(dragTile);
   };
-// ///////////////// //
-// Drawing Functions
-//
+  // ///////////////// //
+  // Drawing Functions
+  //
 const
   drawCell = function(yLocation, xLocation, tile) {
     const
@@ -157,14 +157,14 @@ const
     mapTemplate = emptyTemplate;
     redrawMap(mapTemplate);
   };
-// ///////////// //
-// Draw Listener
+  // ///////////// //
+  // Draw Listener
 submitSize.addEventListener('click', defineGrid);
 
 
-// ///////////////////// //
-// Drag & Drop Functions
-//
+  // ///////////////////// //
+  // Drag & Drop Functions
+  //
 let grabbedTile, origin, oldX, oldY, newX, newY;
 const
   grabCell = function(grabbed){
@@ -184,8 +184,8 @@ const
     grabbedTile = undefined;
     redrawMap(mapTemplate);
   };
-// ///////////////////// //
-// Drag & Drop Listeners
+  // ///////////////////// //
+  // Drag & Drop Listeners
 interact('.draggable').draggable({
   listeners: { start (e) { grabCell(e.target); } }
 });
@@ -210,21 +210,32 @@ const
       name: document.getElementById('mapSaveName').value,
       layout: mapTemplate,
     };
-    const blobbedMap = new Blob([JSON.stringify(mapSaveObj)], {type: 'application/json;charset=utf-8'});
-    FileSaver.saveAs(blobbedMap, `mapSave-${mapSaveObj.name}.JSON`);
+    const blobbedMap = new Blob([JSON.stringify(mapSaveObj)], {type: 'text/plain;charset=utf-8'});
+    FileSaver.saveAs(blobbedMap, `mapSave-${mapSaveObj.name}.txt`);
   },
 
   handleDrop = function(e) {
-    const [...file] = e.dataTransfer.files;
-    if (file.length > 1) return console.error('Choose exactly one file to load');
-    const mapReader = new FileReader();
-    console.log();
+    if (e.dataTransfer.files.length > 1) return console.error('Choose exactly one file to load');
+
+    const
+      [...file] = e.dataTransfer.files,
+      mapToLoad = file[0],
+      mapReader = new FileReader();
+
+    mapReader.readAsText(mapToLoad);
+    mapReader.onload = ()=>{
+      const loadedFile = JSON.parse((mapReader.result).toString());
+      console.log(loadedFile.layout);
+      mapTemplate = loadedFile.layout;
+      redrawMap(mapTemplate);
+      toggleLoadPortal();
+    };
   },
 
-  toggleLoadPortal = function() { loadPortal.classList.toggle('is-active'); },
-  lightsOn = function() { loadPortal.classList.add('highlight') },
-  lightOff = function() { loadPortal.classList.remove('highlight') },
-  preventDefaults = function(e) { e.preventDefault(); e.stopPropagation(); };
+  toggleLoadPortal = ()=>{ loadPortal.classList.toggle('is-active'); },
+  lightsOn = ()=>{ loadPortal.classList.add('highlight') },
+  lightOff = ()=>{ loadPortal.classList.remove('highlight') },
+  preventDefaults = (e)=>{ e.preventDefault(); e.stopPropagation(); };
 
   // ///////////////////// //
   // Save & Load Listeners
@@ -237,6 +248,7 @@ submitSave.addEventListener('click', save);
 ['dragleave', 'drop'].forEach(e => loadDropIn.addEventListener(e, lightOff, false));
 
 loadDropIn.addEventListener('drop', handleDrop, false);
+
   // ////////// //
   // Initialize
 defineGrid();
