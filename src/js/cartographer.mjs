@@ -3,44 +3,105 @@ import interact from 'interactjs';
 import FileSaver from 'file-saver';
 
 const
-  submitSize = document.getElementById('submitSize'),
   mapDisplay = document.getElementById('mapDisplay'),
   canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' }),
-  smoothCanvas = document.getElementById('mapPort'),
-  context = smoothCanvas.getContext('2d');
-const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
-  Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1], // /_______________<-Single walls-<
-  NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1], // /____________________<-Corners-<
-  NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1], // /___________________<-DeadEnds-<
-  NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0], // /__<-Corridors, Block, & Empty-<
-};
-const editPalette = [
+  context = document.getElementById('mapPort').getContext('2d'),
+
+  cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
+  Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1],  // /_______________<-Single walls-<
+  NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1],  // /____________________<-Corners-<
+  NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1],  // /___________________<-DeadEnds-<
+  NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0]}, // /__<-Corridors, Block, & Empty-<
+
+  // No idea I think this translates the thing above? Or vice-versa??
+  editPalette = [
   ['Nxxx','xExx','xxSx','xxxW'],
   ['NExx','NxxW','xESx','xxSW'],
   ['NESx','NExW','NxSW','xESW'],
-  ['NESW','NxSx','xExW','xxxx'],
-];
+  ['NESW','NxSx','xExW','xxxx']],
 
-const
+  // Map Size Variables
   mapSize = 600,
   borderWidth = 20,
   borderOffset = 10,
   portSize = mapSize + borderWidth;
+
 let cellWidth, mapTemplate;
+
+export const µ = function(selector) {
+  let el;
+  const obj = {
+    grab() {
+      if (el) return el;
+      return document.querySelector(selector);
+    },
+    toggleClass(className) {
+      el.classList.toggle(className);
+      return this;
+    },
+    addClass(className) {
+      el.classList.add(className);
+      return this;
+    },
+    removeClass(className) {
+      el.classList.remove(className);
+      return this;
+    },
+    replaceWith(string) {
+      el.outerHTML = string;
+      return this;
+    },
+    html(string) {
+      if (!string) {
+        return el.innerHTML;
+      } else {
+        el.innerHTML = string;
+        return this;
+      }
+    },
+    context(){
+      return el.outerHTML;
+    },
+    remove() {
+      el.parentNode.removeChild(el);
+      return this;
+    },
+    text(string) {
+      el.textContent = string.toString();
+    },
+    set(obj) {
+      Object.keys(obj).forEach((key) => {
+        el.setAttribute(key, obj[key])
+      });
+      return this;
+    }
+  };
+  el = obj.grab(selector);
+  return obj;
+};
+
+
   // ///////////////////// //
   // Tile <div> Generators
   //
-const
-  createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
-    const
-      dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`),
-      dropTile = document.createElement("div");
+const createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
+    const dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`);
+    const dropTile = document.createElement("div");
+
     dropTile.appendChild(dropContent);
+    dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
+/*
     dropTile.setAttribute("class", "mapTile dropzone");
     dropTile.setAttribute("data-x", `${xLocation}`);
     dropTile.setAttribute("data-y", `${yLocation}`);
     dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
     dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
+    */
+    µ(`#${xLocation}-${yLocation}Ð`).set({
+      "class": "mapTile dropzone",
+      "data-x": `${xLocation}`,
+      "data-y": `${yLocation}`,
+      "style": `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`});
     mapDisplay.append(dropTile);
   },
 
@@ -159,7 +220,7 @@ const
   };
   // ///////////// //
   // Draw Listener
-submitSize.addEventListener('click', defineGrid);
+document.getElementById('submitSize').addEventListener('click', defineGrid);
 
 
   // ///////////////////// //
