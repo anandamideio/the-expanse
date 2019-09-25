@@ -1,6 +1,8 @@
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
 import interact from 'interactjs';
 import FileSaver from 'file-saver';
+import {Ω} from './modules/omega';
+import {µ} from './modules/micro';
 
 const
   mapDisplay = document.getElementById('mapDisplay'),
@@ -28,81 +30,18 @@ const
 
 let cellWidth, mapTemplate;
 
-export const µ = function(selector) {
-  let el;
-  const obj = {
-    grab() {
-      if (el) return el;
-      return document.querySelector(selector);
-    },
-    toggleClass(className) {
-      el.classList.toggle(className);
-      return this;
-    },
-    addClass(className) {
-      el.classList.add(className);
-      return this;
-    },
-    removeClass(className) {
-      el.classList.remove(className);
-      return this;
-    },
-    replaceWith(string) {
-      el.outerHTML = string;
-      return this;
-    },
-    html(string) {
-      if (!string) {
-        return el.innerHTML;
-      } else {
-        el.innerHTML = string;
-        return this;
-      }
-    },
-    context(){
-      return el.outerHTML;
-    },
-    remove() {
-      el.parentNode.removeChild(el);
-      return this;
-    },
-    text(string) {
-      el.textContent = string.toString();
-    },
-    set(obj) {
-      Object.keys(obj).forEach((key) => {
-        el.setAttribute(key, obj[key])
-      });
-      return this;
-    }
-  };
-  el = obj.grab(selector);
-  return obj;
-};
-
-
   // ///////////////////// //
   // Tile <div> Generators
   //
 const createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
-    const dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`);
-    const dropTile = document.createElement("div");
-
-    dropTile.appendChild(dropContent);
-    dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
-/*
-    dropTile.setAttribute("class", "mapTile dropzone");
-    dropTile.setAttribute("data-x", `${xLocation}`);
-    dropTile.setAttribute("data-y", `${yLocation}`);
-    dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
-    dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-    */
-    µ(`#${xLocation}-${yLocation}Ð`).set({
+    Ω('div', `x${xLocation}-y${yLocation}`, 'mapDisplay');
+    µ(`#x${xLocation}-y${yLocation}`)
+      .textChild(`${xLocation}:${yLocation}`)
+      .set({
       "class": "mapTile dropzone",
       "data-x": `${xLocation}`,
       "data-y": `${yLocation}`,
       "style": `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`});
-    mapDisplay.append(dropTile);
   },
 
   createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow, edit) {
@@ -119,7 +58,7 @@ const createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow
     }
     dragTile.setAttribute("data-x", `${xLocation}`);
     dragTile.setAttribute("data-y", `${yLocation}`);
-    dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
+    dragTile.setAttribute("id", `x${xLocation}_y${yLocation}°`);
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
     mapDisplay.append(dragTile);
   };
