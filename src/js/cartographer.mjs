@@ -1,47 +1,47 @@
 import rough from '../../node_modules/roughjs/dist/rough-async.umd';
 import interact from 'interactjs';
 import FileSaver from 'file-saver';
+import {Ω} from './modules/omega';
+import {µ} from './modules/micro';
 
 const
-  submitSize = document.getElementById('submitSize'),
   mapDisplay = document.getElementById('mapDisplay'),
   canvas = rough.canvas(document.getElementById('mapPort'), { workerURL: './worker.js' }),
-  smoothCanvas = document.getElementById('mapPort'),
-  context = smoothCanvas.getContext('2d');
-const cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
-  Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1], // /_______________<-Single walls-<
-  NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1], // /____________________<-Corners-<
-  NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1], // /___________________<-DeadEnds-<
-  NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0], // /__<-Corridors, Block, & Empty-<
-};
-const editPalette = [
+  context = document.getElementById('mapPort').getContext('2d'),
+
+  cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
+  Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1],  // /_______________<-Single walls-<
+  NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1],  // /____________________<-Corners-<
+  NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1],  // /___________________<-DeadEnds-<
+  NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0]}, // /__<-Corridors, Block, & Empty-<
+
+  // No idea I think this translates the thing above? Or vice-versa??
+  editPalette = [
   ['Nxxx','xExx','xxSx','xxxW'],
   ['NExx','NxxW','xESx','xxSW'],
   ['NESx','NExW','NxSW','xESW'],
-  ['NESW','NxSx','xExW','xxxx'],
-];
+  ['NESW','NxSx','xExW','xxxx']],
 
-const
+  // Map Size Variables
   mapSize = 600,
   borderWidth = 20,
   borderOffset = 10,
   portSize = mapSize + borderWidth;
+
 let cellWidth, mapTemplate;
+
   // ///////////////////// //
   // Tile <div> Generators
   //
-const
-  createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
-    const
-      dropContent = document.createTextNode(`${xLocation}:${yLocation} - Ð`),
-      dropTile = document.createElement("div");
-    dropTile.appendChild(dropContent);
-    dropTile.setAttribute("class", "mapTile dropzone");
-    dropTile.setAttribute("data-x", `${xLocation}`);
-    dropTile.setAttribute("data-y", `${yLocation}`);
-    dropTile.setAttribute("id", `${xLocation}-${yLocation}Ð`);
-    dropTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-    mapDisplay.append(dropTile);
+const createDrop = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow){
+    Ω('div', `x${xLocation}-y${yLocation}`, 'mapDisplay');
+    µ(`#x${xLocation}-y${yLocation}`)
+      .textChild(`${xLocation}:${yLocation}`)
+      .set({
+      "class": "mapTile dropzone",
+      "data-x": `${xLocation}`,
+      "data-y": `${yLocation}`,
+      "style": `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`});
   },
 
   createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow, edit) {
@@ -58,7 +58,7 @@ const
     }
     dragTile.setAttribute("data-x", `${xLocation}`);
     dragTile.setAttribute("data-y", `${yLocation}`);
-    dragTile.setAttribute("id", `${xLocation}.${yLocation}°`);
+    dragTile.setAttribute("id", `x${xLocation}_y${yLocation}°`);
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
     mapDisplay.append(dragTile);
   };
@@ -159,7 +159,7 @@ const
   };
   // ///////////// //
   // Draw Listener
-submitSize.addEventListener('click', defineGrid);
+document.getElementById('submitSize').addEventListener('click', defineGrid);
 
 
   // ///////////////////// //
