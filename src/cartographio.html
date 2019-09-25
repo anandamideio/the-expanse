@@ -9,8 +9,8 @@
 </head>
 <body>
 <div>
-  <canvas id="mapPort" width="1200" height="650"></canvas>
-  <div id="mapDisplay"></div>
+  <canvas id="mapCanvas" width="1200" height="650"></canvas>
+  <div id="mapGrid"></div>
 </div>
 <div class="level">
   <div class="level-left">
@@ -20,7 +20,7 @@
           <div class="level-item">
             <div class="field has-addons" id="mapControls">
               <p class="control">
-                <input class="input" type="text" id="sizeControl" placeholder="Map Size" style="margin-left: .5rem; width: 15rem"><label for="sizeControl" hidden></label>
+                <input class="input" type="text" id="gridSize" placeholder="Map Size" style="margin-left: .5rem; width: 15rem"><label for="gridSize" hidden></label>
               </p>
               <p class="control">
                 <button class="button is-dark" type="submit" id="submitSize">Resize</button><label for="submitSize" hidden></label>
