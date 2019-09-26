@@ -4,25 +4,21 @@ import FileSaver from 'file-saver';
 import {Ω} from './modules/omega';
 import {µ} from './modules/micro';
 
-const
-  mapGrid = document.getElementById('mapGrid'),
-  canvas = rough.canvas(document.getElementById('mapCanvas'), { workerURL: './worker.js' }),
+const canvas = rough.canvas(document.getElementById('mapCanvas'), { workerURL: './worker.js' }),
 
-  cell = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
+  cellKey = { // .................>-The walls are represented in the order: [top, right, bottom, left]->
   Nxxx: [1,0,0,0], xExx: [0,1,0,0], xxSx: [0,0,1,0], xxxW: [0,0,0,1],  // /_______________<-Single walls-<
   NExx: [1,1,0,0], NxxW: [1,0,0,1], xESx: [0,1,1,0], xxSW: [0,0,1,1],  // /____________________<-Corners-<
   NESx: [1,1,1,0], NExW: [1,1,0,1], NxSW: [1,0,1,1], xESW: [0,1,1,1],  // /___________________<-DeadEnds-<
   NESW: [1,1,1,1], NxSx: [1,0,1,0], xExW: [0,1,0,1], xxxx: [0,0,0,0]}, // /__<-Corridors, Block, & Empty-<
 
-  // No idea I think this translates the thing above? Or vice-versa??
-  editPalette = [
+  editPalette = [ // Choices of walls for the drag palette
   ['Nxxx','xExx','xxSx','xxxW'],
   ['NExx','NxxW','xESx','xxSW'],
   ['NESx','NExW','NxSW','xESW'],
   ['NESW','NxSx','xExW','xxxx']],
 
-  // Map Size Variables
-  mapSize = 600,
+  mapSize = 600, // Map Size Variables
   borderWidth = 20,
   borderOffset = 10,
   portSize = mapSize + borderWidth;
@@ -47,7 +43,7 @@ const createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow
     const
       dragContent = document.createTextNode(`${mapTemplate[yLocation][xLocation]} - °`),
       dragTile = document.createElement("div");
-    dragTile.appendChild(dragContent);
+      dragTile.appendChild(dragContent);
     if (edit) {
       dragTile.setAttribute("class", "mapTile dragEdit");
       dragTile.setAttribute("data-origin", "fromPalette");
@@ -59,53 +55,11 @@ const createDrag = function(yLocation, xLocation, yCoordinateLow, xCoordinateLow
     dragTile.setAttribute("data-y", `${yLocation}`);
     dragTile.setAttribute("id", `x${xLocation}_y${yLocation}°`);
     dragTile.setAttribute("style", `height:${cellWidth}px; width:${cellWidth}px; top:${yCoordinateLow}px; left:${xCoordinateLow}px;`);
-    mapGrid.append(dragTile);
-  };
-
-  // ///////////////// //
-  // Drawing Functions
-  //
-const drawCell = function(yLocation, xLocation, tile) {
-    const
-      xCoordinateLow = borderWidth + (cellWidth * xLocation),
-      xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth,
-      yCoordinateLow = borderWidth + (cellWidth * yLocation),
-      yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth,
-      lines = [
-      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< --------- <-top-<
-      {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------ <-right-<
-      {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ---- <-bottom-<
-      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
-    ];
-
-    createDrop(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
-    createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
-    cell[`${tile}`].forEach((wall, index) => {
-      wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)
-    })
-  };
-
-const drawPaletteCell = function(yLocation, xLocation, tile) {
-    const
-      editBorderOffset = portSize + (3 * borderOffset),
-      editCellWidth = cellWidth + 20,
-      xCoordinateLow = borderWidth + (cellWidth * xLocation) + (portSize + (2 * borderOffset)) + (borderWidth * xLocation),
-      yCoordinateLow = borderWidth + (cellWidth * yLocation) + (borderWidth * yLocation),
-      xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth + (portSize +(2 * borderOffset)) + (borderWidth * xLocation),
-      yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth + (borderWidth * yLocation),
-      lines = [
-      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< -------- <-top-<
-      {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------- <-right-<
-      {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ------ <-bottom-<
-      {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
-    ];
-
-    createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow, 'edit');
-    canvas.rectangle((yLocation * editCellWidth) + editBorderOffset, (xLocation * editCellWidth)+ borderOffset, editCellWidth, editCellWidth);
-    cell[`${tile}`].forEach((wall, index) => { wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)})
+    document.getElementById('mapGrid').append(dragTile);
   };
 
 const drawMap = (template) => {
+  const mapGrid = document.getElementById('mapGrid');
     let child = mapGrid.lastElementChild; //                                                      Kill all children nodes of the global mapGrid var
     while (child) {
       mapGrid.removeChild(child); //                                                      Kill the child
@@ -114,16 +68,47 @@ const drawMap = (template) => {
     //                                                                                            Clear the canvas, create a new canvas
     document.getElementById('mapCanvas').getContext('2d').clearRect(5, 5, 1200, 1200);
     cellWidth = mapSize/template.length; //                                                       Makes the cells that compose the grid dynamic
-    editPalette.forEach((row, yIter) => { //                                                      Makes the cell-choice palette on the right-hand side of the screen
-      row.forEach((cell, xIter) => { drawPaletteCell(yIter, xIter, cell) })
+    editPalette.forEach((row, yLocation) => { //                                                  Makes the cell-choice palette on the right-hand side of the screen
+      row.forEach((cell, xLocation) => {
+        const //                                                                                  Creates the cells
+          editBorderOffset = portSize + (3 * borderOffset),
+          editCellWidth = cellWidth + 20,
+          xCoordinateLow = borderWidth + (cellWidth * xLocation) + (portSize + (2 * borderOffset)) + (borderWidth * xLocation),
+          yCoordinateLow = borderWidth + (cellWidth * yLocation) + (borderWidth * yLocation),
+          xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth + (portSize +(2 * borderOffset)) + (borderWidth * xLocation),
+          yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth + (borderWidth * yLocation),
+          lines = [
+            {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //<-< -------- <-top-<
+            {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh},//<-< ------- <-right-<
+            {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, //<-< ------ <-bottom-<
+            {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //<-< -------- <-left-<
+          ];
+        createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow, 'edit');
+        canvas.rectangle((yLocation * editCellWidth) + editBorderOffset, (xLocation * editCellWidth)+ borderOffset, editCellWidth, editCellWidth);
+        cellKey[`${cell}`].forEach((wall, index) => { wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)})
+      })
     });
     canvas.rectangle(borderOffset, borderOffset, portSize, portSize); // <-< -------------- <-    A simple border-<
-    template.forEach((row, yIter) => { //                                                         Makes the main map grid
-      row.forEach((cell, xIter) => { drawCell(yIter, xIter, cell); })
+    template.forEach((row, yLocation) => { //                                                     Makes the main map grid
+      row.forEach((cell, xLocation) => {
+        const //                                                                                  Creates the cells
+          xCoordinateLow = borderWidth + (cellWidth * xLocation), xCoordinateHigh = borderWidth + (cellWidth * xLocation) + cellWidth,
+          yCoordinateLow = borderWidth + (cellWidth * yLocation), yCoordinateHigh = borderWidth + (cellWidth * yLocation) + cellWidth,
+          lines = [
+            {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateLow}, //   <-< -------- <-top-<
+            {p1: xCoordinateHigh, p2: yCoordinateLow, p3: xCoordinateHigh, p4: yCoordinateHigh}, // <-< -------- <-right-<
+            {p1: xCoordinateLow, p2: yCoordinateHigh, p3: xCoordinateHigh, p4: yCoordinateHigh}, // <-< -------- <-bottom-<
+            {p1: xCoordinateLow, p2: yCoordinateLow, p3: xCoordinateLow, p4: yCoordinateHigh}, //   <-< -------- <-left-<
+          ];
+
+        createDrop(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
+        createDrag(yLocation, xLocation, yCoordinateLow, xCoordinateLow);
+        cellKey[`${cell}`].forEach((wall, index) => { wall && canvas.line(lines[index].p1, lines[index].p2, lines[index].p3, lines[index].p4)})
+      })
     });
   };
 
-const defineGrid = () => { //                                                                         Define the inital grid that all cells will be placed upon
+const defineGrid = () => { //                                                                     Define the inital grid that all cells will be placed upon
     const gridTemplate = [], renderedGrid = []; let renderHeight = 0;
     let gridSize = parseInt(document.getElementById('gridSize').value, 10); // Read the gridSize input under the map
     if (gridSize < 6 && gridSize > 0){ gridSize = 6;} //                                          Don't accept a value below 6
